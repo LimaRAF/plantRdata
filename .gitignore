@@ -19,3 +19,15 @@
 # User-specific files ----
 README.html
 inst/doc
+*.zip
+*.cpg
+*.dbf
+*.prj
+*.shp
+*.shx
+data-raw/latam
+data-raw/wfo
+data-raw/wcvp
+data-raw/gbif
+data-raw/gadm
+

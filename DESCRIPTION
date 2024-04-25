@@ -1,18 +1,23 @@
 Package: plantRdata
 Type: Package
-Title: The Title of the Project
+Title: Accessory Data for Package plantR
 Version: 0.0.0.9000
 Authors@R: c(
-    person(given   = "Renato",
-           family  = "Lima",
-           role    = c("aut", "cre", "cph"),
+    person(given   = "Renato A.",
+           family  = "Ferreira de Lima",
+           role    = c("aut", "cre"),
            email   = "raflima@usp.br",
-           comment = c(ORCID = "0000-0002-1048-0138")))
-Description: A paragraph providing a full description of the project (on 
-    several lines...)
+           comment = c(ORCID = "0000-0002-1048-0138")),
+    person(given = "Andrea",
+           family = "Sánchez-Tapia",
+           role = c("aut"),
+           email = "andreasancheztapia@gmail.com",
+           comment = c(ORCID = "0000-0002-3521-4338")))
+Description: Creates reproducible datasets and maps for use by package 
+ plantR, a package for managing records from biological collections
 URL: https://github.com/LimaRAF/plantRdata
 BugReports: https://github.com/LimaRAF/plantRdata/issues
-License: GPL (>= 2)
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1

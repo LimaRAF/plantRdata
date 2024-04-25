@@ -1,6 +1,7 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# plantRdata <img src="man/figures/package-sticker.png" align="right" style="float:right; height:120px;"/>
+# plantRdata <!-- <img src="man/figures/package-sticker.png" align="right" style="float:right; height:120px;"/> -->
 
 <!-- badges: start -->
 
@@ -12,7 +13,7 @@ Check](https://github.com/LimaRAF/plantRdata/actions/workflows/R-CMD-check.yaml/
 [![Test
 coverage](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.yaml)
 [![codecov](https://codecov.io/gh/LimaRAF/plantRdata/branch/master/graph/badge.svg)](https://codecov.io/gh/LimaRAF/plantRdata)
-[![License: GPL (&gt;=
+[![License: GPL (\>=
 2)](https://img.shields.io/badge/License-GPL%20%28%3E%3D%202%29-blue.svg)](https://choosealicense.com/licenses/gpl-2.0/)
 <!-- badges: end -->
 
@@ -30,7 +31,9 @@ coverage](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.
 
 ## Overview
 
-The R package `plantRdata`… **{{ DESCRIBE YOUR PACKAGE }}**
+This is a data package that creates the taxonomic datasets and maps to
+be more easily used by the R package plantR
+(<https://github.com/LimaRAF/plantR/>).
 
 ## Features
 
@@ -42,17 +45,21 @@ The main purpose of `plantRdata` is to… **{{ DESCRIBE THE MAIN FEATURES
 You can install the development version from
 [GitHub](https://github.com/) with:
 
-    ## Install < remotes > package (if not already installed) ----
-    if (!requireNamespace("remotes", quietly = TRUE)) {
-      install.packages("remotes")
-    }
+``` r
+## Install < remotes > package (if not already installed) ----
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
 
-    ## Install < plantRdata > from GitHub ----
-    remotes::install_github("LimaRAF/plantRdata")
+## Install < plantRdata > from GitHub ----
+remotes::install_github("LimaRAF/plantRdata")
+```
 
 Then you can attach the package `plantRdata`:
 
-    library("plantRdata")
+``` r
+library("plantRdata")
+```
 
 ## Get started
 
@@ -66,10 +73,10 @@ vignette.
 `plantRdata` provides **{{ NUMBER OF VIGNETTES }}** vignettes to learn
 more about the package:
 
--   the [Get
-    started](https://LimaRAF.github.io/plantRdata/articles/plantRdata.html)
-    vignette describes the core features of the package
--   **{{ LIST ADDITIONAL VIGNETTES }}**
+- the [Get
+  started](https://LimaRAF.github.io/plantRdata/articles/plantRdata.html)
+  vignette describes the core features of the package
+- **{{ LIST ADDITIONAL VIGNETTES }}**
 
 ## Citation
 

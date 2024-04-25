@@ -14,7 +14,7 @@ knitr::opts_chunk$set(collapse  = TRUE,
 
 
 
-plantRdata <img src="man/figures/package-sticker.png" align="right" style="float:right; height:120px;"/>
+plantRdata <!-- <img src="man/figures/package-sticker.png" align="right" style="float:right; height:120px;"/> -->
 =========================================================
 
 <!-- badges: start -->
@@ -33,7 +33,6 @@ plantRdata <img src="man/figures/package-sticker.png" align="right" style="float
   • <a href="#features">Features</a><br>
   • <a href="#installation">Installation</a><br>
   • <a href="#get-started">Get started</a><br>
-  • <a href="#long-form-documentations">Long-form documentations</a><br>
   • <a href="#citation">Citation</a><br>
   • <a href="#contributing">Contributing</a><br>
   • <a href="#acknowledgments">Acknowledgments</a><br>
@@ -44,8 +43,9 @@ plantRdata <img src="man/figures/package-sticker.png" align="right" style="float
 
 ## Overview
 
-
-The R package `plantRdata`... **{{ DESCRIBE YOUR PACKAGE }}**
+This is a data package that creates the taxonomic datasets and maps to
+be more easily used by the R package plantR
+(https://github.com/LimaRAF/plantR/).
 
 
 
@@ -82,16 +82,6 @@ library("plantRdata")
 For an overview of the main features of `plantRdata`, please read the 
 [Get started](https://LimaRAF.github.io/plantRdata/articles/plantRdata.html)
 vignette.
-
-
-
-## Long-form documentations
-
-`plantRdata` provides **{{ NUMBER OF VIGNETTES }}** vignettes to learn more about the package:
-
-- the [Get started](https://LimaRAF.github.io/plantRdata/articles/plantRdata.html)
-vignette describes the core features of the package
-- **{{ LIST ADDITIONAL VIGNETTES }}**
 
 
 
