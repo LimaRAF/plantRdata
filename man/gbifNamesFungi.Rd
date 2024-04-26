@@ -5,7 +5,7 @@
 \alias{gbifNamesFungi}
 \title{GBIF Fungi Taxonomy}
 \format{
-An object of class \code{data.frame} with 396394 rows and 12 columns.
+An object of class \code{data.frame} with 12 columns and almost 400 thousand rows.
 }
 \source{
 \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
@@ -30,7 +30,5 @@ possible problems in the taxon name matching process.
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (year-month-day):
 \code{2023-08-28}.}
-\format{A data frame with:
-\code{396394 rows and 12 columns}.}
 \references{
 \code{GBIF Secretariat. GBIF Backbone Taxonomy. Checklist dataset https://doi.org/10.15468/39omei accessed via GBIF.org on 2023-08-28.}.}

@@ -5,7 +5,7 @@
 \alias{wcvpNames}
 \title{World Flora Online Taxonomy}
 \format{
-An object of class \code{data.frame} with 1421040 rows and 10 columns.
+An object of class \code{data.frame} with 10 columns and over 1.4 million rows.
 }
 \source{
 \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
@@ -41,5 +41,3 @@ https://doi.org/10.15468/6h8ucr
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (year-month-day):
 \code{2023-10-04}.}
-\format{A data frame with:
-\code{1421040 rows and 10 columns}.}

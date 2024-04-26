@@ -20,8 +20,7 @@
 #' @source \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
 #' @evalRd .readScript("data-raw/wcvp/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @evalRd .readScript("data-raw/wcvp/df_dim.txt", 
-#'  "A data frame with:", "format")
+#' @format An object of class \code{data.frame} with 10 columns and over 1.4 million rows.
 #' @references 
 #'   Govaerts, R., Nic Lughadha, E., Black, N. et al. (2021). The
 #'   World Checklist of Vascular Plants, a continuously updated

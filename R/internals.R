@@ -89,6 +89,9 @@
 #'  
 #' @keywords internal
 #'
+#' @importFrom httr GET content
+#' @importFrom rvest html_element html_text html_text2
+#' 
 #' @noRd
 #' 
 .getUpdates <- function (url = NULL, source = NULL, pattern = NULL) {

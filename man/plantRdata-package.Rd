@@ -4,9 +4,9 @@
 \name{plantRdata-package}
 \alias{plantRdata}
 \alias{plantRdata-package}
-\title{plantRdata: The Title of the Project}
+\title{plantRdata: Accessory Datasets for Package plantR}
 \description{
-A paragraph providing a full description of the project (on several lines...)
+Creates reproducible datasets and maps for use by package plantR, a package for managing records from biological collections.
 }
 \seealso{
 Useful links:
@@ -17,7 +17,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Renato Lima \email{raflima@usp.br} (\href{https://orcid.org/0000-0002-1048-0138}{ORCID}) [copyright holder]
+\strong{Maintainer}: Renato A. Ferreira de Lima \email{raflima@usp.br} (\href{https://orcid.org/0000-0002-1048-0138}{ORCID})
+
+Authors:
+\itemize{
+  \item Andrea Sánchez-Tapia \email{andreasancheztapia@gmail.com} (\href{https://orcid.org/0000-0002-3521-4338}{ORCID})
+}
 
 }
 \keyword{internal}

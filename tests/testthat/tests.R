@@ -13,10 +13,27 @@ test_that("Testing .buildName", {
 })
 
 test_that("Testing .readScript", {
-  x <- .readScript("data-raw/wfo/last_update.txt")
-  testthat::expect_false(is.null(x), FALSE)
   testthat::expect_error(.readScript())
   testthat::expect_warning(
-  testthat::expect_error(.readScript("data-raw/wfo/xuxu.txt"))
+  testthat::expect_error(.readScript("xuxu.txt"))
   )
+})
+
+test_that("Testing .getUpdates", {
+  
+  url0 <- "https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/"
+  zip <- "WFO_Backbone.zip"
+  last_updated <- .getUpdates(url0, "wfo", zip)
+  testthat::expect_equal(last_updated, "1/22/2024")
+  
+  url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
+  zip <- "wcvp.zip"
+  last_updated <- .getUpdates(url0, "wcvp", zip)
+  testthat::expect_equal(last_updated, "2023-10-04")
+
+  url0 <- "https://hosted-datasets.gbif.org/datasets/backbone/current/"
+  zip <- "backbone.zip"
+  last_updated <- .getUpdates(url0, "gbif", zip)
+  testthat::expect_equal(last_updated, "2023-08-28")
+  
 })

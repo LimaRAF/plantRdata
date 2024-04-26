@@ -19,13 +19,12 @@
 #' @usage data(wfoNames)
 #' @source \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
 #' @evalRd .readScript("data-raw/wfo/last_update.txt", 
-#'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @evalRd .readScript("data-raw/wfo/df_dim.txt", 
-#'  "A data frame with:", "format")
+#'  "Last update of the downloaded backbone (month/day/year):")
+#' @format An object of class \code{data.frame} with 11 columns and over 1.5 million rows.
 #' @references 
 #'   Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World
 #'   Flora Online: Placing taxonomists at the heart of a definitive
-#'   and comprehensive global resource on the world’s plants. Taxon,
-#'   69(6): 1311–1341. https://doi.org/10.1002/tax.12373
+#'   and comprehensive global resource on the world's plants. Taxon
+#'   69: 1311-1341. https://doi.org/10.1002/tax.12373
 #' 
 "wfoNames"

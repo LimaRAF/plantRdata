@@ -5,7 +5,7 @@
 \alias{wfoNames}
 \title{World Flora Online Taxonomy}
 \format{
-An object of class \code{data.frame} with 1572151 rows and 11 columns.
+An object of class \code{data.frame} with 11 columns and over 1.5 million rows.
 }
 \source{
 \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
@@ -31,11 +31,9 @@ matching process.
 \references{
 Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World
 Flora Online: Placing taxonomists at the heart of a definitive
-and comprehensive global resource on the world’s plants. Taxon,
-69(6): 1311–1341. https://doi.org/10.1002/tax.12373
+and comprehensive global resource on the world's plants. Taxon
+69: 1311-1341. https://doi.org/10.1002/tax.12373
 }
 \keyword{datasets}
-\note{Last update/change of the downloaded backbone (year-month-day):
+\note{Last update of the downloaded backbone (month/day/year):
 \code{1/22/2024}.}
-\format{A data frame with:
-\code{1572151 rows and 11 columns}.}
