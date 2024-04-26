@@ -1,0 +1,35 @@
+#' @title World Flora Online Taxonomy
+#'
+#' @description A dataset containing the most relevant taxonomic
+#'   information of plant names stored in the [World Checklist of Vascular Plants](https://powo.science.kew.org/), 
+#'   taxonomic backbone including vascular plants (i.e. licophytes,
+#'   ferns, gimnosperms and angiosperms) and all taxonomic levels
+#'   (i.e. infra-species, species, genus, family and so on).
+#'   Bryophytes are not included. \cr\cr The original backbone was
+#'   slightly edited aiming to standardize the notation across
+#'   backbones provided in `plantRdata`. Many columns in the original
+#'   source that were not essential for the process of taxon name
+#'   checking were removed and most of them were renamed. Duplicated
+#'   scientific names (i.e. taxon name + author) whose taxon status
+#'   were not accepted were also removed to avoid possible problems in
+#'   the taxon name matching process.
+#'
+#' @keywords datasets
+#' @name wcvpNames
+#' @usage data(wcvpNames)
+#' @source \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
+#' @evalRd .readScript("data-raw/wcvp/last_update.txt", 
+#'  "Last update/change of the downloaded backbone (year-month-day):")
+#' @evalRd .readScript("data-raw/wcvp/df_dim.txt", 
+#'  "A data frame with:", "format")
+#' @references 
+#'   Govaerts, R., Nic Lughadha, E., Black, N. et al. (2021). The
+#'   World Checklist of Vascular Plants, a continuously updated
+#'   resource for exploring global plant diversity. Sci. Data 8, 215.
+#'   https://doi.org/10.1038/s41597-021-00997-6
+#'   
+#'   Govaerts, R. (2023). The World Checklist of Vascular Plants
+#'   (WCVP). Royal Botanic Gardens, Kew. Checklist dataset
+#'   https://doi.org/10.15468/6h8ucr
+#'   
+"wcvpNames"
