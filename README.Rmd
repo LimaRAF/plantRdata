@@ -18,24 +18,19 @@ plantRdata <!-- <img src="man/figures/package-sticker.png" align="right" style="
 =========================================================
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/plantRdata)](https://CRAN.R-project.org/package=plantRdata)
+<!-- [![CRAN status](https://www.r-pkg.org/badges/version/plantRdata)](https://CRAN.R-project.org/package=plantRdata) -->
 [![R CMD Check](https://github.com/LimaRAF/plantRdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/LimaRAF/plantRdata/actions/workflows/R-CMD-check.yaml)
 [![Website](https://github.com/LimaRAF/plantRdata/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/LimaRAF/plantRdata/actions/workflows/pkgdown.yaml)
 [![Test coverage](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.yaml)
-[![codecov](https://codecov.io/gh/LimaRAF/plantRdata/branch/master/graph/badge.svg)](https://codecov.io/gh/LimaRAF/plantRdata)
-[![License: GPL (>= 2)](https://img.shields.io/badge/License-GPL%20%28%3E%3D%202%29-blue.svg)](https://choosealicense.com/licenses/gpl-2.0/)
+<!-- [![codecov](https://codecov.io/gh/LimaRAF/plantRdata/branch/master/graph/badge.svg)](https://codecov.io/gh/LimaRAF/plantRdata) -->
+[![License: GPL (>= 3)](https://img.shields.io/badge/License-GPL%20%28%3E%3D%203%29-blue.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 <!-- badges: end -->
 
 
 
 <p align="left">
   • <a href="#overview">Overview</a><br>
-  • <a href="#features">Features</a><br>
   • <a href="#installation">Installation</a><br>
-  • <a href="#get-started">Get started</a><br>
-  • <a href="#citation">Citation</a><br>
-  • <a href="#contributing">Contributing</a><br>
-  • <a href="#acknowledgments">Acknowledgments</a><br>
   • <a href="#references">References</a>
 </p>
 
@@ -43,17 +38,23 @@ plantRdata <!-- <img src="man/figures/package-sticker.png" align="right" style="
 
 ## Overview
 
-This is a data package that creates the taxonomic datasets and maps to
-be more easily used by the R package plantR
-(https://github.com/LimaRAF/plantR/).
+This is a data package that compiles, edits and redistributes
+relatively large taxonomic datasets and maps that are currently used
+by the R package `plantR` (https://github.com/LimaRAF/plantR/). These
+datasets are used for the validation of taxonomic and geographic
+information associated to species occurrence records.
 
+Currently, `plantRdata` provides processed datasets from the following
+sources:
 
+ * [World Flora Online](https://www.worldfloraonline.org/)
+ * [World Checklist of Vascular Plants](https://powo.science.kew.org/)
+ * [Global Biodiversity Information Facility](https://www.gbif.org/)
+      * Only the kingdoms Plantae, Fungi and Animalia are currently provided
 
-## Features
-
-The main purpose of `plantRdata` is to... **{{ DESCRIBE THE MAIN FEATURES }}**
-
-
+Please read the documentation of each dataset for further details (e.g.
+`?wfoNames`) on dataset content, processing, orginal source and last
+update.
 
 ## Installation
 
@@ -75,43 +76,21 @@ Then you can attach the package `plantRdata`:
 library("plantRdata")
 ```
 
-
-
-## Get started
-
-For an overview of the main features of `plantRdata`, please read the 
-[Get started](https://LimaRAF.github.io/plantRdata/articles/plantRdata.html)
-vignette.
-
-
-
-## Citation
-
-Please cite `plantRdata` as: 
-
-> Lima Renato (`r format(Sys.Date(), "%Y")`) plantRdata: An R 
-package to **{{ TITLE }}**. R package version 0.0.0.9000. 
-<https://github.com/LimaRAF/plantRdata/>
-
-
-
-## Contributing
-
-All types of contributions are encouraged and valued. For more information, 
-check out our [Contributor Guidelines](https://github.com/LimaRAF/plantRdata/blob/main/CONTRIBUTING.md).
-
-Please note that the `plantRdata` project is released with a 
-[Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). 
-By contributing to this project, you agree to abide by its terms.
-
-
-
-## Acknowledgments
-
-**{{ OPTIONAL SECTION }}**
-
-
-
 ## References
 
-**{{ OPTIONAL SECTION }}**
+This package does not generate new information. It only provide
+processed snapshots of the datasets it compiles. So, we kindly ask you
+to read and cite the original data providers:
+
+> Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World Flora
+Online: Placing taxonomists at the heart of a definitive and
+comprehensive global resource on the world’s plants. Taxon, 69(6):
+1311-1341. https://doi.org/10.1002/tax.12373
+
+> Govaerts, R., Nic Lughadha, E., Black, N. et al. (2021). The World
+Checklist of Vascular Plants, a continuously updated resource for
+exploring global plant diversity. Sci. Data 8: 215.
+https://doi.org/10.1038/s41597-021-00997-6
+
+> GBIF Secretariat (2023). GBIF Backbone Taxonomy. Checklist dataset.
+accessed via GBIF.org. https://doi.org/10.15468/39omei

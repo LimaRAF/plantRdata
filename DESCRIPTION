@@ -1,6 +1,6 @@
 Package: plantRdata
 Type: Package
-Title: Accessory Data for Package plantR
+Title: Accessory Datasets for Package plantR
 Version: 0.0.0.9000
 Authors@R: c(
     person(given   = "Renato A.",
@@ -13,8 +13,8 @@ Authors@R: c(
            role = c("aut"),
            email = "andreasancheztapia@gmail.com",
            comment = c(ORCID = "0000-0002-3521-4338")))
-Description: Creates reproducible datasets and maps for use by package 
- plantR, a package for managing records from biological collections
+Maintainer: Renato A. Ferreira de Lima <raflima@usp.br>
+Description: Creates reproducible datasets and maps for use by package plantR, a package for managing records from biological collections.
 URL: https://github.com/LimaRAF/plantRdata
 BugReports: https://github.com/LimaRAF/plantRdata/issues
 License: GPL (>= 3)
@@ -27,3 +27,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
+LazyData: true
+LazyDataCompression: xz

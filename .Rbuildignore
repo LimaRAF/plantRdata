@@ -9,3 +9,5 @@
 ^README\.html$
 ^_pkgdown\.yaml$
 ^CITATION\.cff$
+^make\.R$
+^data-raw$
