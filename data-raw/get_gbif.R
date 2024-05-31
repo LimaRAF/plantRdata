@@ -28,7 +28,7 @@ last_download <- readLines(file.path(here::here(), "data-raw", backbone,
 if (last_updated != last_download) {
   ## download the latest taxonomic backbone (in browser or using the code below)
   url <- paste0(url0, zip)
-  options(timeout = max(300, getOption("timeout")))
+  options(timeout = max(600, getOption("timeout")))
   utils::download.file(url = url, destfile = path, mode = "wb")
   
   ## unzipping the data
@@ -67,16 +67,20 @@ if (last_updated != last_download) {
   data$name <- .squish(data$name)
   
   ## obtaining the accepted.name column
-  data1 <- data[, c("id", "name", "authorship", "taxon.rank")]
+  rep_these <- is.na(data$accepted.id)
+  data1 <- data[rep_these, c("id", "name", "authorship", 
+                    "taxon.rank", "name.status")]
   names(data1)[1] <- "accepted.id" 
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
   rep_these <- !data$accepted.id %in% c("", " ", NA, "NA")
-  data$accepted.name <- NA_character_
+  data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
-  data$accepted.name[rep_these] <- paste(tmp$name.x[rep_these],
-                                         tmp$authorship.x[rep_these])
-  data$accepted.taxon.rank[rep_these] <- tmp$taxon.rank.x[rep_these]
+  data$accepted.name.status <- NA_character_
+  data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
+  data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
+  data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
+  data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
   ## Organizing fields
   cols1 <- c("id",
@@ -89,8 +93,10 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
-             "accepted.name",  #accepted binomial + authors             
-             "accepted.taxon.rank") 
+             "accepted.name",  #accepted canonical             
+             "accepted.authorship",  #accepted authors             
+             "accepted.taxon.rank",
+             "accepted.name.status") 
   data <- data[, cols1]
   
   ## Basic standardization of notation
@@ -98,6 +104,8 @@ if (last_updated != last_download) {
   data$taxon.status <- tolower(data$taxon.status)
   data$name.status <- tolower(data$name.status)
   data$accepted.taxon.rank <- tolower(data$accepted.taxon.rank)
+  data$accepted.name.status <- tolower(data$accepted.name.status)
+  
   
   # Saving ------------------------------------------------------------
   reinos <- c("Plantae", "Fungi", "Animalia")
@@ -111,6 +119,9 @@ if (last_updated != last_download) {
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[order(data$id), ]
   
+  ## Removing the combined name + authorship column
+  data <- data[, -which(names(data) %in% "scientific.name")]
+
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
   

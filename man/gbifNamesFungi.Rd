@@ -5,7 +5,7 @@
 \alias{gbifNamesFungi}
 \title{GBIF Fungi Taxonomy}
 \format{
-An object of class \code{data.frame} with 12 columns and almost 400 thousand rows.
+An object of class \code{data.frame} with 13 columns and almost 400 thousand rows.
 }
 \source{
 \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}

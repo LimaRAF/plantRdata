@@ -25,7 +25,6 @@ inst/doc
 *.prj
 *.shp
 *.shx
-data-raw
 data-raw/latam
 data-raw/wfo
 data-raw/wcvp

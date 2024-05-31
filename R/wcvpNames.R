@@ -3,7 +3,7 @@
 #' @description A dataset containing the most relevant taxonomic
 #'   information of plant names stored in the [World Checklist of Vascular Plants](https://powo.science.kew.org/), 
 #'   taxonomic backbone including vascular plants (i.e. licophytes,
-#'   ferns, gimnosperms and angiosperms) and all taxonomic levels
+#'   ferns, gymnosperms and angiosperms) and all taxonomic levels
 #'   (i.e. infra-species, species, genus, family and so on).
 #'   Bryophytes are not included. \cr\cr The original backbone was
 #'   slightly edited aiming to standardize the notation across
@@ -20,7 +20,8 @@
 #' @source \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
 #' @evalRd .readScript("data-raw/wcvp/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @format An object of class \code{data.frame} with 10 columns and over 1.4 million rows.
+#' @format An object of class \code{data.frame} with 11 columns and
+#'   over 1.4 million rows.
 #' @references 
 #'   Govaerts, R., Nic Lughadha, E., Black, N. et al. (2021). The
 #'   World Checklist of Vascular Plants, a continuously updated

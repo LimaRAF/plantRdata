@@ -58,8 +58,30 @@
   }    
 }
 
-
 #' 
+#' @title Store External Data
+#' 
+#' @param data an R object. The data to be saved in `inst\extdata`.
+#' @param source a character. The name of the data source (e.g.
+#'   "wfo") which correspond to the new subfolder in `inst\extdata`.
+#' @param name a character. The name of the file taht will cointain
+#' the data (e.g. "wfoNames")
+#'  
+#' @keywords internal
+#' 
+#' @importFrom here here
+#'
+#' @noRd
+#' 
+.storeData <- function(data, source = "wcvp", name = "wcvpNames") {
+  dir <- here::here("inst", "extdata", source)
+  if (!dir.exists(dir)) 
+    dir.create(dir)
+  
+  save(data, file = file.path(dir, paste0(name, ".rda")),
+       compress = "xz")
+}
+
 #' @title Read File in Help
 #' 
 #' @param file a path to the file with the script to be read

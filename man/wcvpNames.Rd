@@ -5,7 +5,8 @@
 \alias{wcvpNames}
 \title{World Flora Online Taxonomy}
 \format{
-An object of class \code{data.frame} with 10 columns and over 1.4 million rows.
+An object of class \code{data.frame} with 11 columns and
+over 1.4 million rows.
 }
 \source{
 \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
@@ -17,7 +18,7 @@ data(wcvpNames)
 A dataset containing the most relevant taxonomic
 information of plant names stored in the \href{https://powo.science.kew.org/}{World Checklist of Vascular Plants},
 taxonomic backbone including vascular plants (i.e. licophytes,
-ferns, gimnosperms and angiosperms) and all taxonomic levels
+ferns, gymnosperms and angiosperms) and all taxonomic levels
 (i.e. infra-species, species, genus, family and so on).
 Bryophytes are not included. \cr\cr The original backbone was
 slightly edited aiming to standardize the notation across
@@ -40,4 +41,4 @@ https://doi.org/10.15468/6h8ucr
 }
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (year-month-day):
-\code{2023-10-04}.}
+\code{2024-05-21}.}

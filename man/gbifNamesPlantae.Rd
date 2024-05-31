@@ -5,7 +5,7 @@
 \alias{gbifNamesPlantae}
 \title{GBIF Plant Taxonomy}
 \format{
-An object of class \code{data.frame} with 12 columns and over 1.9 million rows.
+An object of class \code{data.frame} with 13 columns and over 1.9 million rows.
 }
 \source{
 \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}

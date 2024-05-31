@@ -54,33 +54,40 @@ if (last_updated != last_download) {
                    "accepted.id")
   
   ## obtaining the scientific.name (taxon names + authors)
-  data$scientific.name <- 
+  data$scientific.name <-
     .buildName(data, col.names = c("name", "authorship"))
   
   ## obtaining the accepted.name column
-  data1 <- data[, c("id", "name", "authorship", "taxon.rank")]
+  rep_these <- data$accepted.id %in% c("", " ", NA, "NA")
+  data1 <- data[rep_these, 
+                c("id", "name", "authorship", 
+                  "taxon.rank", "name.status")]
   names(data1)[1] <- "accepted.id" 
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
-  rep_these <- !data$accepted.id %in% c("", " ", NA, "NA")
   data$accepted.name <- NA_character_
+  data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
-  data$accepted.name[rep_these] <- paste(tmp$name.x[rep_these],
-                                         tmp$authorship.x[rep_these])
-  data$accepted.taxon.rank[rep_these] <- tmp$taxon.rank.x[rep_these]
+  data$accepted.name.status <- NA_character_
+  data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
+  data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
+  data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
+  data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
   ## Organizing fields
   cols1 <- c("id",
              "phylum",
              "family",
-             "name", # genus + epiteth + infra.epiteth
+             "name", # genus + epiteth + infra.epiteth (canonical)
              "authorship", # name author
              "scientific.name", # name + authors
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, etc
-             "accepted.name",  #accepted binomial + authors             
-             "accepted.taxon.rank") 
+             "accepted.name",  #accepted canonical             
+             "accepted.authorship",  #accepted authors             
+             "accepted.taxon.rank",
+             "accepted.name.status") 
   data <- data[, cols1]
   
   ## Basic standardization of notation
@@ -88,6 +95,7 @@ if (last_updated != last_download) {
   data$taxon.status <- tolower(data$taxon.status)
   data$name.status <- tolower(data$name.status)
   data$accepted.taxon.rank <- tolower(data$accepted.taxon.rank)
+  data$accepted.name.status <- tolower(data$accepted.name.status)
   data$phylum[data$phylum %in% "A"] <- "Magnoliophyta"
   
   # Saving ------------------------------------------------------------
@@ -95,6 +103,9 @@ if (last_updated != last_download) {
   data <- data[order(data$taxon.status), ]
   data <- data[!duplicated(data$scientific.name), ]
   data <- data[order(data$id), ]
+  
+  ## Removing the combined name + authorship column
+  data <- data[, -which(names(data) %in% "scientific.name")]
   
   ## How many columns and lines (in April 2024: 1,572,151)
   dimensions <- 

@@ -53,26 +53,33 @@ if (last_updated != last_download) {
   ## filtering and standardizing important column names
   cols <- c("plant_name_id", "family", "taxon_name", "taxon_authors",
             "taxon_rank", "nomenclatural_remarks", "taxon_status", 
-            "accepted_plant_name_id") 
+            "accepted_plant_name_id", "powo_id") 
+
   data <- as.data.frame(data)[, cols]
   names(data) <- c("id", "family", "name", "authorship", "taxon.rank",
-                   "name.status", "taxon.status", "accepted.id")
+                   "name.status", "taxon.status", "accepted.id", "id.powo")
   
   ## obtaining the scientific.name (taxon names + authors)
   data$scientific.name <- 
     .buildName(data, col.names = c("name", "authorship"))
   
   ## obtaining the accepted.name column
-  data1 <- data[, c("id", "name", "authorship", "taxon.rank")]
-  names(data1)[1] <- "accepted.id" 
+  rep_these <- data$id == data$accepted.id
+  rep_these[is.na(rep_these)] <- FALSE
+  data1 <- data[rep_these, 
+                c("id", "name", "authorship", 
+                  "taxon.rank", "name.status")]
+  names(data1)[1] <- "accepted.id"
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
-  rep_these <- !data$accepted.id %in% c("", " ", NA, "NA")
   data$accepted.name <- NA_character_
+  data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
-  data$accepted.name[rep_these] <- paste(tmp$name.x[rep_these],
-                                         tmp$authorship.x[rep_these])
-  data$accepted.taxon.rank[rep_these] <- tmp$taxon.rank.x[rep_these]
+  data$accepted.name.status <- NA_character_
+  data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
+  data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
+  data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
+  data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
   ## Organizing fields
   cols1 <- c("id",
@@ -83,8 +90,10 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
-             "accepted.name",  #accepted binomial + authors             
-             "accepted.taxon.rank") 
+             "accepted.name",  #accepted canonical             
+             "accepted.authorship",  #accepted authors             
+             "accepted.taxon.rank",
+             "accepted.name.status") 
   data <- data[, cols1]
   
   ## Basic standardization of notation
@@ -92,6 +101,7 @@ if (last_updated != last_download) {
   data$taxon.status <- tolower(data$taxon.status)
   data$name.status <- tolower(data$name.status)
   data$accepted.taxon.rank <- tolower(data$accepted.taxon.rank)
+  data$accepted.name.status <- tolower(data$accepted.name.status)
   
   # further editing of name status
   status <- .squish(data$name.status)
@@ -134,25 +144,27 @@ if (last_updated != last_download) {
   data <- data[!duplicated(data$scientific.name), ]
   data <- data[order(data$id), ]
   
+  ## Removing the combined name + authorship column
+  data <- data[, -which(names(data) %in% "scientific.name")]
+
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
   
-  ## How many columns and lines (in April 2024: 1,421,040)
+  ## How many columns and lines (in April 2024: 1,421,040; May 2024: 1,429,871)
   dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
   
   ## Saving
+  # .storeData(data, source= backbone, name= paste0(backbone, "Names"))
   wcvpNames <- data
   usethis::use_data(wcvpNames, compress = "xz", overwrite=TRUE)
   
-  path_to_save <- file.path(here::here(), "data-raw", backbone, 
-                            "last_update.txt")
-  write(last_update, path_to_save)
-  path_to_save <- file.path(here::here(), "data-raw", backbone, 
-                            "version.txt")
-  write(version, path_to_save)
-  path_to_save <- file.path(here::here(), "data-raw", backbone, 
-                            "df_dim.txt")
-  write(dimensions, path_to_save)
+  data_folder <- "data-raw" # c("inst", "extdata")
+  path_folder <- file.path(here::here(), 
+                           paste0(data_folder, collapse = .Platform$file.sep),
+                           backbone)
+  write(last_update, file.path(path_folder, "last_update.txt"))
+  write(version, file.path(path_folder, "version.txt"))
+  write(dimensions, file.path(path_folder, "df_dim.txt"))
   unlink(path)
 }  
 rm(list = ls())

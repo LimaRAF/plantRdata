@@ -29,7 +29,7 @@ test_that("Testing .getUpdates", {
   url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
   zip <- "wcvp.zip"
   last_updated <- .getUpdates(url0, "wcvp", zip)
-  testthat::expect_equal(last_updated, "2023-10-04")
+  testthat::expect_equal(last_updated, "2024-05-21")
 
   url0 <- "https://hosted-datasets.gbif.org/datasets/backbone/current/"
   zip <- "backbone.zip"

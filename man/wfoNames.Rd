@@ -5,7 +5,7 @@
 \alias{wfoNames}
 \title{World Flora Online Taxonomy}
 \format{
-An object of class \code{data.frame} with 11 columns and over 1.5 million rows.
+An object of class \code{data.frame} with 12 columns and over 1.5 million rows.
 }
 \source{
 \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
@@ -17,7 +17,7 @@ data(wfoNames)
 A dataset containing the most relevant taxonomic
 information of plant names stored in the \href{https://www.worldfloraonline.org/}{World Flora Online},
 taxonomic backbone including bryophytes and vascular plants (i.e.
-licophytes, ferns, gimnosperms and angiosperms) and all taxonomic
+licophytes, ferns, gymnosperms and angiosperms) and all taxonomic
 levels (i.e. infra-species, species, genus, family and so
 on).\cr\cr The original backbone was slightly edited aiming to
 standardize the notation across backbones provided in

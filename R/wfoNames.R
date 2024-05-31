@@ -3,7 +3,7 @@
 #' @description A dataset containing the most relevant taxonomic
 #'   information of plant names stored in the [World Flora Online](https://www.worldfloraonline.org/), 
 #'   taxonomic backbone including bryophytes and vascular plants (i.e.
-#'   licophytes, ferns, gimnosperms and angiosperms) and all taxonomic
+#'   licophytes, ferns, gymnosperms and angiosperms) and all taxonomic
 #'   levels (i.e. infra-species, species, genus, family and so
 #'   on).\cr\cr The original backbone was slightly edited aiming to
 #'   standardize the notation across backbones provided in
@@ -16,11 +16,12 @@
 #'
 #' @keywords datasets
 #' @name wfoNames
+#' @aliases wfoNames
 #' @usage data(wfoNames)
 #' @source \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
 #' @evalRd .readScript("data-raw/wfo/last_update.txt", 
 #'  "Last update of the downloaded backbone (month/day/year):")
-#' @format An object of class \code{data.frame} with 11 columns and over 1.5 million rows.
+#' @format An object of class \code{data.frame} with 12 columns and over 1.5 million rows.
 #' @references 
 #'   Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World
 #'   Flora Online: Placing taxonomists at the heart of a definitive

@@ -1,20 +1,16 @@
 Package: plantRdata
 Type: Package
 Title: Accessory Datasets for Package plantR
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
     person(given   = "Renato A.",
            family  = "Ferreira de Lima",
            role    = c("aut", "cre"),
            email   = "raflima@usp.br",
-           comment = c(ORCID = "0000-0002-1048-0138")),
-    person(given = "Andrea",
-           family = "Sánchez-Tapia",
-           role = c("aut"),
-           email = "andreasancheztapia@gmail.com",
-           comment = c(ORCID = "0000-0002-3521-4338")))
+           comment = c(ORCID = "0000-0002-1048-0138")))
 Maintainer: Renato A. Ferreira de Lima <raflima@usp.br>
-Description: Creates reproducible datasets and maps for use by package plantR, a package for managing records from biological collections.
+Description: Creates reproducible datasets and maps for use by package plantR, 
+              a package for managing records from biological collections.
 URL: https://github.com/LimaRAF/plantRdata
 BugReports: https://github.com/LimaRAF/plantRdata/issues
 License: GPL (>= 3)
@@ -24,8 +20,9 @@ RoxygenNote: 7.3.1
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports: 
+    here,
     httr,
     rvest
 Suggests: 
