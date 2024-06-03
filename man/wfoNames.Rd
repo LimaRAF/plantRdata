@@ -5,7 +5,8 @@
 \alias{wfoNames}
 \title{World Flora Online Taxonomy}
 \format{
-An object of class \code{data.frame} with 12 columns and over 1.5 million rows.
+An object of class \code{data.frame} with 13 columns and
+over 1.5 million rows.
 }
 \source{
 \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}

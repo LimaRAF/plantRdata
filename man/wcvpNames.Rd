@@ -3,9 +3,9 @@
 \docType{data}
 \name{wcvpNames}
 \alias{wcvpNames}
-\title{World Flora Online Taxonomy}
+\title{World Checklist of Vascular Plants Taxonomy}
 \format{
-An object of class \code{data.frame} with 11 columns and
+An object of class \code{data.frame} with 12 columns and
 over 1.4 million rows.
 }
 \source{
@@ -21,13 +21,25 @@ taxonomic backbone including vascular plants (i.e. licophytes,
 ferns, gymnosperms and angiosperms) and all taxonomic levels
 (i.e. infra-species, species, genus, family and so on).
 Bryophytes are not included. \cr\cr The original backbone was
-slightly edited aiming to standardize the notation across
-backbones provided in \code{plantRdata}. Many columns in the original
+edited aiming to standardize the notation across
+backbones in \code{plantRdata}. Many columns in the original
 source that were not essential for the process of taxon name
 checking were removed and most of them were renamed. Duplicated
 scientific names (i.e. taxon name + author) whose taxon status
 were not accepted were also removed to avoid possible problems in
-the taxon name matching process.
+the taxon name matching process. \cr\cr The original column with
+the taxonomic status was simplified to macth other backbones and
+have the following categories: accepted, synonyms, unplaced
+and blank (i.e. empty status). Original categories 'Artificial
+Hybrid', 'Local Biotype' and 'Orthographic' were converted to
+'accepted', 'accepted' and 'synonym', excepted when the
+nomenclatural remarks suggested otherwise. Other original
+categories (i.e. Illegitimate, Invalid and Misapplied) were left
+as blanks. All original categories were moved to the
+nomenclatural remarks column for consistency. For WCVP, the
+original nomenclatural remarks was very rich information but it
+had to be simplified to facilitate the understanding of the
+output of name matching process to the final users.
 }
 \references{
 Govaerts, R., Nic Lughadha, E., Black, N. et al. (2021). The

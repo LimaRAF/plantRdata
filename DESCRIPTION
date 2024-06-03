@@ -9,8 +9,7 @@ Authors@R: c(
            email   = "raflima@usp.br",
            comment = c(ORCID = "0000-0002-1048-0138")))
 Maintainer: Renato A. Ferreira de Lima <raflima@usp.br>
-Description: Creates reproducible datasets and maps for use by package plantR, 
-              a package for managing records from biological collections.
+Description: Creates reproducible datasets and maps for use by package plantR, a package for managing records from biological collections.
 URL: https://github.com/LimaRAF/plantRdata
 BugReports: https://github.com/LimaRAF/plantRdata/issues
 License: GPL (>= 3)

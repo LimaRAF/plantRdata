@@ -21,7 +21,8 @@
 #' @source \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
 #' @evalRd .readScript("data-raw/wfo/last_update.txt", 
 #'  "Last update of the downloaded backbone (month/day/year):")
-#' @format An object of class \code{data.frame} with 12 columns and over 1.5 million rows.
+#' @format An object of class \code{data.frame} with 13 columns and
+#'   over 1.5 million rows.
 #' @references 
 #'   Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World
 #'   Flora Online: Placing taxonomists at the heart of a definitive

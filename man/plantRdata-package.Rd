@@ -19,10 +19,5 @@ Useful links:
 \author{
 \strong{Maintainer}: Renato A. Ferreira de Lima \email{raflima@usp.br} (\href{https://orcid.org/0000-0002-1048-0138}{ORCID})
 
-Authors:
-\itemize{
-  \item Andrea Sánchez-Tapia \email{andreasancheztapia@gmail.com} (\href{https://orcid.org/0000-0002-3521-4338}{ORCID})
-}
-
 }
 \keyword{internal}

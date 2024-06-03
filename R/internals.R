@@ -117,8 +117,17 @@
 #' @noRd
 #' 
 .getUpdates <- function (url = NULL, source = NULL, pattern = NULL) {
-  
+
   web_url <- httr::GET(url)
+  
+  if (source == "bfo") {
+    
+    current_date <- web_url$headers$`last-modified`
+    current_date <- gsub(".*, ", "", current_date, perl = TRUE)
+    current_date <- gsub(" [0-9][0-9]:.*", "", current_date, perl = TRUE)
+    return(current_date)
+  }
+  
   content <- httr::content(web_url)
   node <- rvest::html_element(content, "pre")
   

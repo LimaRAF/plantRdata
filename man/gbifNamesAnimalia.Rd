@@ -5,7 +5,7 @@
 \alias{gbifNamesAnimalia}
 \title{GBIF Animal Taxonomy}
 \format{
-An object of class \code{data.frame} with 13 columns and over 3.7 million rows.
+An object of class \code{data.frame} with 14 columns and over 3.7 million rows.
 }
 \source{
 \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}

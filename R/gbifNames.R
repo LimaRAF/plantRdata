@@ -19,7 +19,8 @@
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @format An object of class \code{data.frame} with 13 columns and over 1.9 million rows.
+#' @format An object of class \code{data.frame} with 14 columns and
+#'   over 1.9 million rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
 #'  
 "gbifNamesPlantae"
@@ -45,7 +46,7 @@
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @format An object of class \code{data.frame} with 13 columns and almost 400 thousand rows.
+#' @format An object of class \code{data.frame} with 14 columns and almost 400 thousand rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
 #'  
 "gbifNamesFungi"
@@ -71,7 +72,7 @@
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
-#' @format An object of class \code{data.frame} with 13 columns and over 3.7 million rows.
+#' @format An object of class \code{data.frame} with 14 columns and over 3.7 million rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
 #'  
 "gbifNamesAnimalia"

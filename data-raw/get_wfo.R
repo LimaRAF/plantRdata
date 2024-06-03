@@ -61,17 +61,20 @@ if (last_updated != last_download) {
   rep_these <- data$accepted.id %in% c("", " ", NA, "NA")
   data1 <- data[rep_these, 
                 c("id", "name", "authorship", 
-                  "taxon.rank", "name.status")]
+                  "taxon.rank", "taxon.status", "name.status")]
   names(data1)[1] <- "accepted.id" 
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
   data$accepted.name <- NA_character_
   data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
+  data$accepted.taxon.status <- NA_character_
   data$accepted.name.status <- NA_character_
+  
   data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
   data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
   data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
+  data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
   ## Organizing fields
@@ -87,6 +90,7 @@ if (last_updated != last_download) {
              "accepted.name",  #accepted canonical             
              "accepted.authorship",  #accepted authors             
              "accepted.taxon.rank",
+             "accepted.taxon.status",
              "accepted.name.status") 
   data <- data[, cols1]
   
@@ -95,6 +99,7 @@ if (last_updated != last_download) {
   data$taxon.status <- tolower(data$taxon.status)
   data$name.status <- tolower(data$name.status)
   data$accepted.taxon.rank <- tolower(data$accepted.taxon.rank)
+  data$accepted.taxon.status <- tolower(data$accepted.taxon.status)
   data$accepted.name.status <- tolower(data$accepted.name.status)
   data$phylum[data$phylum %in% "A"] <- "Magnoliophyta"
   
