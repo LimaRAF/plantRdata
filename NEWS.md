@@ -4,6 +4,8 @@
 
 * Updating WCVP backbone
 
+* Fixing test check error
+
 # plantRdata 0.0.1
 
 * Creation of the package and adding the `NEWS.md` file to track changes.

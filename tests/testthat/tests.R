@@ -21,34 +21,48 @@ testthat::test_that("Testing .readScript", {
 
 testthat::test_that("Testing .getUpdates", {
   
+  all_files <- list.files(
+    system.file("testdata", package = "plantRdata"), 
+    full.names = TRUE)
+  
   url0 <- "https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/"
   zip <- "WFO_Backbone.zip"
-  last_updated <- .getUpdates(url0, "wfo", zip)
-  data <- readLines("data-raw/wfo/last_update.txt")
+  bb <- "wfo"
+  last_updated <- .getUpdates(url0, bb, zip)
+  path <- all_files[grepl(bb, all_files)]
+  data <- readLines(path)
   testthat::expect_equal(last_updated, data)
   
   url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
   zip <- "wcvp.zip"
-  last_updated <- .getUpdates(url0, "wcvp", zip)
-  data <- readLines("data-raw/wcvp/last_update.txt")
+  bb <- "wcvp"
+  last_updated <- .getUpdates(url0, bb, zip)
+  path <- all_files[grepl(bb, all_files)]
+  data <- readLines(path)
   testthat::expect_equal(last_updated, data)
-
+  
   url0 <- "https://hosted-datasets.gbif.org/datasets/backbone/current/"
   zip <- "backbone.zip"
-  last_updated <- .getUpdates(url0, "gbif", zip)
-  data <- readLines("data-raw/gbif/last_update.txt")
+  bb <- "gbif"
+  last_updated <- .getUpdates(url0, bb, zip)
+  path <- all_files[grepl(bb, all_files)]
+  data <- readLines(path)
   testthat::expect_equal(last_updated, data)
   
   url0 <- "https://ipt.jbrj.gov.br/jbrj/archive.do?r=lista_especies_flora_brasil"
   zip <- "bfo.zip"
-  last_updated <- .getUpdates(url0, "bfo", zip)
-  data <- readLines("data-raw/bfo/last_update.txt")
+  bb <- "bfo"
+  last_updated <- .getUpdates(url0, bb, zip)
+  path <- all_files[grepl(bb, all_files)]
+  data <- readLines(path)
   testthat::expect_equal(last_updated, data)
-
+  
   # url0 <- ""
   # zip <- "lcvp.zip"
-  # last_updated <- .getUpdates(url0, "lcvp", zip)
-  # data <- readLines("data-raw/lcvp/last_update.txt")
+  # bb <- "lcvp"
+  # last_updated <- .getUpdates(url0, bb, zip)
+  # path <- all_files[grepl(bb, all_files)]
+  # data <- readLines(path)
   # testthat::expect_equal(last_updated, data)
   
   

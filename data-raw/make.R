@@ -31,8 +31,11 @@ source(here::here("data-raw", "get_bfo.R"))
 # source(here::here("data-raw", "get_gadm.R"))
 # Building the map at global scale
 # source(here::here("data-raw", "get_world_map.R"))
-# Building the map for latin america (central and south america + caribbeans)
+# Building the map for latin america (central/south america + caribbeans)
 # source(here::here("data-raw", "get_latam_map.R"))
+
+# Saving the last update info in the inst/testdata folder
+source(here::here("data-raw", "raw2testdata.R"))
 
 ## Build/Updating Package Manuals ---------------------------------
 devtools::document(here::here())

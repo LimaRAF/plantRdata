@@ -37,6 +37,8 @@ sources:
 - [World Checklist of Vascular Plants](https://powo.science.kew.org/)
 - [Global Biodiversity Information Facility](https://www.gbif.org/)
   - Only the kingdoms Plantae, Fungi and Animalia are currently provided
+- [Flora and Funga of
+  Brazil](https://floradobrasil.jbrj.gov.br/consulta/)
 
 Please read the documentation of each dataset for further details (e.g.
 `?wfoNames`) on dataset content, processing, orginal source and last
@@ -81,3 +83,7 @@ to read and cite the original data providers:
 
 > GBIF Secretariat (2023). GBIF Backbone Taxonomy. Checklist dataset.
 > accessed via GBIF.org. <https://doi.org/10.15468/39omei>
+
+> Flora e Funga do Brasil (Constantly updated): Flora e Funga do Brasil
+> project. Instituto de Pesquisas Jardim Botânico do Rio de Janeiro.
+> Dataset/Checklist. <https://doi.org/10.15468/1mtkaw>
