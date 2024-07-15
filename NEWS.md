@@ -1,3 +1,9 @@
+# plantRdata 0.0.2
+
+* Addition of the another taxonomic backbones: BFO
+
+* Updating WCVP backbone
+
 # plantRdata 0.0.1
 
 * Creation of the package and adding the `NEWS.md` file to track changes.

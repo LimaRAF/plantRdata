@@ -108,13 +108,13 @@ if (last_updated != last_download) {
   
   # Editing data --------------------------------------------------
   ## filtering and standardizing important column names
-  cols <- c("taxonID", "phylum", "family", 
+  cols <- c("taxonID", "higherClassification" ,"phylum", "family", 
             "taxon_name", "scientificNameAuthorship",
             "taxonRank", "nomenclaturalStatus", "taxonomicStatus", 
             "acceptedNameUsageID", "kingdom", "scientificName") 
 
   data <- as.data.frame(data)[, cols]
-  names(data) <- c("id", "phylum", "family", 
+  names(data) <- c("id", "higherClassification", "phylum", "family", 
                    "name", "authorship", 
                    "taxon.rank", "name.status", "taxon.status", 
                    "accepted.id", "kingdom", "scientific.name")
@@ -141,6 +141,7 @@ if (last_updated != last_download) {
   
   ## Organizing fields
   cols1 <- c("id",
+             "higherClassification", 
              "kingdom",
              "phylum",
              "family", # "genus", "specific.epiteth", "infra.epiteth",
@@ -165,14 +166,34 @@ if (last_updated != last_download) {
   data$accepted.taxon.status <- tolower(data$accepted.taxon.status)
   data$accepted.name.status <- tolower(data$accepted.name.status)
   
-
+  ## Higher class editing
+  data$higherClassification <- gsub("Flora e Funga;", "", data$higherClassification)
+  data$higherClassification <- gsub(";.*", "", data$higherClassification)
+  rep_these <- data$phylum %in% "Ascomycota" & 
+                data$higherClassification %in% "Angiospermas"
+  if (any(rep_these))
+    data$phylum[rep_these] <- "Tracheophyta" 
+  
+  rep_these <- data$phylum %in% "Tracheophyta"
+  data$higherClassification[rep_these] <- "Tracheophyta"   
+  data$higherClassification[data$higherClassification %in% "Algas"] <- 
+    "Algae"
+  data$higherClassification[data$higherClassification %in% "Briófitas"] <- 
+    "Bryophyta"
+  data$higherClassification[data$higherClassification %in% "Fungos"] <- 
+    "Fungi"
+  table(data$higherClassification)
+  
+  
   # Saving ------------------------------------------------------------
-  reinos <- c("Plantae", "Fungi")
+  # reinos <- c("Plantae", "Fungi")
+  classes <- c("Tracheophyta", "Algae", "Bryophyta", "Fungi")
   
   ## Cleaning and re-ordering
-  data <- data[!data$name %in% c("", NA, " ", "NA", reinos), ]
+  data <- data[!data$name %in% c("", NA, " ", "NA"), ]
   data <- data[order(data$taxon.status), ]
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
+  data <- data[!duplicated(paste0(data$higherClassification, data$scientific.name)), ]
   data <- data[order(data$id), ]
   
   ## Removing the combined name + authorship column
@@ -182,31 +203,53 @@ if (last_updated != last_download) {
   data$id <- paste0(backbone, "-", data$id)
   
   ## How many columns and lines (in May 2024: 153,089)
-  dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
+  # dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
   
   ## Saving
-  data_split <- split(data, data$kingdom)
-  data_split <- data_split[names(data_split) %in% reinos]
-  for (i in seq_along(reinos)) {
-    dimensions <- paste0(dim(data_split[[reinos[i]]])[1], 
-                         " rows and ", 
-                         dim(data_split[[reinos[i]]])[2], 
-                         " columns")
-    path_to_save <- file.path(here::here(), "data-raw", backbone, 
-                              paste0("df_dim_",reinos[i],".txt"))
-    write(dimensions, path_to_save)
+  data_split <- split(data, data$higherClassification)
+  data_split <- data_split[names(data_split) %in% classes]
+  for (i in seq_along(classes)) {
     
-    if (reinos[i] == "Plantae") {
-      bfoNamesPlantae <- data_split[[reinos[i]]]
-      usethis::use_data(bfoNamesPlantae, compress = "xz", 
+    if (classes[i] == "Tracheophyta") {
+      bfoNamesTracheophyta <- data_split[[classes[i]]]
+      bfoNamesTracheophyta$higherClassification <- NULL
+      
+      usethis::use_data(bfoNamesTracheophyta, compress = "xz", 
                         overwrite = TRUE)
     }
     
-    if (reinos[i] == "Fungi") {
-      bfoNamesFungi <- data_split[[reinos[i]]]
+    if (classes[i] == "Algae") {
+      bfoNamesAlgae <- data_split[[classes[i]]]
+      bfoNamesAlgae$higherClassification <- NULL
+      
+      usethis::use_data(bfoNamesAlgae, compress = "xz", 
+                        overwrite = TRUE)
+    }
+    
+    if (classes[i] == "Bryophyta") {
+      bfoNamesBryophyta <- data_split[[classes[i]]]
+      bfoNamesBryophyta$higherClassification <- NULL
+      
+      usethis::use_data(bfoNamesBryophyta, compress = "xz", 
+                        overwrite = TRUE)
+    }
+    
+    if (classes[i] == "Fungi") {
+      bfoNamesFungi <- data_split[[classes[i]]]
+      bfoNamesFungi$higherClassification <- NULL
+      
       usethis::use_data(bfoNamesFungi, compress = "xz", 
                         overwrite = TRUE)
     }
+    
+    dimensions <- paste0(dim(data_split[[classes[i]]])[1], 
+                         " rows and ", 
+                         dim(data_split[[classes[i]]])[2], 
+                         " columns")
+    path_to_save <- file.path(here::here(), "data-raw", backbone, 
+                              paste0("df_dim_", classes[i],".txt"))
+    write(dimensions, path_to_save)
+    
   }
   path_to_save <- file.path(here::here(), "data-raw", backbone, 
                             "last_update.txt")
