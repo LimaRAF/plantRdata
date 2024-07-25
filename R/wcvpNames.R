@@ -26,9 +26,6 @@
 #'   had to be simplified to facilitate the understanding of the
 #'   output of name matching process to the final users.
 #'
-#' @keywords datasets
-#' @name wcvpNames
-#' @usage data(wcvpNames)
 #' @source \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
 #' @evalRd .readScript("data-raw/wcvp/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
@@ -43,5 +40,6 @@
 #'   Govaerts, R. (2023). The World Checklist of Vascular Plants
 #'   (WCVP). Royal Botanic Gardens, Kew. Checklist dataset
 #'   https://doi.org/10.15468/6h8ucr
+#' @usage data(wcvpNames)
 #'   
 "wcvpNames"

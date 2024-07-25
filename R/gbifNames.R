@@ -13,15 +13,13 @@
 #'   taxon status were not accepted were also removed to avoid
 #'   possible problems in the taxon name matching process.
 #'
-#' @keywords datasets
-#' @name gbifNamesPlantae
-#' @usage data(gbifNamesPlantae)
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
 #' @format An object of class \code{data.frame} with 14 columns and
 #'   over 1.9 million rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
+#' @usage data(gbifNamesPlantae)
 #'  
 "gbifNamesPlantae"
 
@@ -40,14 +38,12 @@
 #'   taxon status were not accepted were also removed to avoid
 #'   possible problems in the taxon name matching process.
 #'
-#' @keywords datasets
-#' @name gbifNamesFungi
-#' @usage data(gbifNamesFungi)
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
 #' @format An object of class \code{data.frame} with 14 columns and almost 400 thousand rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
+#' @usage data(gbifNamesFungi)
 #'  
 "gbifNamesFungi"
 
@@ -66,13 +62,11 @@
 #'   taxon status were not accepted were also removed to avoid
 #'   possible problems in the taxon name matching process.
 #'
-#' @keywords datasets
-#' @name gbifNamesAnimalia
-#' @usage data(gbifNamesAnimalia)
 #' @source \url{https://hosted-datasets.gbif.org/datasets/backbone/current/}
 #' @evalRd .readScript("data-raw/gbif/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (year-month-day):")
 #' @format An object of class \code{data.frame} with 14 columns and over 3.7 million rows.
 #' @evalRd .readScript("data-raw/gbif/citation.txt", "", "references")
+#' @usage data(gbifNamesAnimalia)
 #'  
 "gbifNamesAnimalia"

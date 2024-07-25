@@ -14,15 +14,13 @@
 #'   accepted were also removed to avoid possible problems in the
 #'   taxon name matching process.
 #'
-#' @keywords datasets
-#' @name bfoNamesTracheophyta
-#' @usage data(bfoNamesTracheophyta)
-#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
 #' @evalRd .readScript("data-raw/bfo/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (day month year):")
 #' @format An object of class \code{data.frame} with 14 columns and
 #'   over 125 thousand rows.
 #' @evalRd .readScript("data-raw/bfo/citation.txt", "", "references")
+#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
+#' @usage data(bfoNamesTracheophyta)
 #'  
 "bfoNamesTracheophyta"
 
@@ -42,15 +40,13 @@
 #'   were not accepted were also removed to avoid possible problems in
 #'   the taxon name matching process.
 #'
-#' @keywords datasets
-#' @name bfoNamesFungi
-#' @usage data(bfoNamesFungi)
-#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
 #' @evalRd .readScript("data-raw/bfo/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (day month year):")
 #' @format An object of class \code{data.frame} with 14 columns and
 #'   almost 12 thousand rows.
 #' @evalRd .readScript("data-raw/bfo/citation.txt", "", "references")
+#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
+#' @usage data(bfoNamesFungi)
 #'  
 "bfoNamesFungi"
 
@@ -70,15 +66,14 @@
 #'   accepted were also removed to avoid possible problems in the
 #'   taxon name matching process.
 #'
-#' @keywords datasets
-#' @name bfoNamesAlgae
-#' @usage data(bfoNamesAlgae)
-#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
 #' @evalRd .readScript("data-raw/bfo/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (day month year):")
 #' @format An object of class \code{data.frame} with 14 columns and
 #'   about one thousand rows.
 #' @evalRd .readScript("data-raw/bfo/citation.txt", "", "references")
+#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
+#' @usage data(bfoNamesAlgae)
+#' 
 "bfoNamesAlgae"
 
 #' @title Brazilian Bryophyte Taxonomy
@@ -97,13 +92,12 @@
 #'   accepted were also removed to avoid possible problems in the
 #'   taxon name matching process.
 #'
-#' @keywords datasets
-#' @name bfoNamesBryophyta
-#' @usage data(bfoNamesBryophyta)
-#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
 #' @evalRd .readScript("data-raw/bfo/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (day month year):")
 #' @format An object of class \code{data.frame} with 14 columns and
 #'   about 5 thousand rows.
 #' @evalRd .readScript("data-raw/bfo/citation.txt", "", "references")
+#' @source \url{https://ipt.jbrj.gov.br/jbrj/resource?r=lista_especies_flora_brasil}
+#' @usage data(bfoNamesBryophyta)
+#' 
 "bfoNamesBryophyta"

@@ -14,10 +14,6 @@
 #'   also removed to avoid possible problems in the taxon name
 #'   matching process.
 #'
-#' @keywords datasets
-#' @name wfoNames
-#' @aliases wfoNames
-#' @usage data(wfoNames)
 #' @source \url{https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/}
 #' @evalRd .readScript("data-raw/wfo/last_update.txt", 
 #'  "Last update of the downloaded backbone (month/day/year):")
@@ -28,5 +24,6 @@
 #'   Flora Online: Placing taxonomists at the heart of a definitive
 #'   and comprehensive global resource on the world's plants. Taxon
 #'   69: 1311-1341. https://doi.org/10.1002/tax.12373
+#' @usage data(wfoNames)
 #' 
 "wfoNames"
