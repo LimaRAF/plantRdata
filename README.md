@@ -39,6 +39,7 @@ sources:
   - Only the kingdoms Plantae, Fungi and Animalia are currently provided
 - [Flora and Funga of
   Brazil](https://floradobrasil.jbrj.gov.br/consulta/)
+  - Divided into Tracheophyta, Fungi, Bryophyta and Algae
 
 Please read the documentation of each dataset for further details (e.g.
 `?wfoNames`) on dataset content, processing, orginal source and last
