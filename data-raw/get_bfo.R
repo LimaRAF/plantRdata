@@ -119,6 +119,22 @@ if (last_updated != last_download) {
                    "taxon.rank", "name.status", "taxon.status", 
                    "accepted.id", "kingdom", "scientific.name")
   
+  ## fixing non-ASCII characters encoding to UTF-8 to avoid R CDM Check warnings
+  Encoding(data$authorship) <- "UTF-8"
+  data$authorship <- iconv(data$authorship, "UTF-8", "UTF-8")
+
+  rep_these <- grepl("\u00d7", data$name) 
+  if (any(rep_these)) {
+    Encoding(data$name[rep_these]) <- "UTF-8"
+    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+  }
+  
+  rep_these <- grepl("\u00eb", data$name) | grepl("\u00fc", data$name)
+  if (any(rep_these)) {
+    Encoding(data$name[rep_these]) <- "UTF-8"
+    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+  }
+  
   ## obtaining the accepted.name column
   rep_these <- is.na(data$accepted.id)
   data1 <- data[rep_these, 

@@ -58,9 +58,26 @@ if (last_updated != last_download) {
             "nomenclaturalStatus", "taxonomicStatus", 
             "acceptedNameUsageID", "kingdom", "taxonRemarks") 
   data <- as.data.frame(data)[, cols]
-  names(data) <- c("id", "phylum", "family", "scientific.name", "name", "authorship", 
-                   "taxon.rank", "name.status", "taxon.status", 
+  names(data) <- c("id", "phylum", "family", "scientific.name", 
+                   "name", "authorship", "taxon.rank", 
+                   "name.status", "taxon.status", 
                    "accepted.id", "kingdom", "taxon.remarks")
+  
+  ## fixing non-ASCII characters encoding to UTF-8 to avoid R CDM Check warnings
+  Encoding(data$authorship) <- "UTF-8"
+  data$authorship <- iconv(data$authorship, "UTF-8", "UTF-8")
+  
+  rep_these <- grepl("\u00d7", data$name) 
+  if (any(rep_these)) {
+    Encoding(data$name[rep_these]) <- "UTF-8"
+    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+  }
+  
+  rep_these <- grepl("\u00eb", data$name) | grepl("\u00fc", data$name)
+  if (any(rep_these)) {
+    Encoding(data$name[rep_these]) <- "UTF-8"
+    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+  }
   
   ## obtaining the scientific.name (taxon names + authors)
   data$scientific.name <- .squish(data$scientific.name)
