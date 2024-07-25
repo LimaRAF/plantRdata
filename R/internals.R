@@ -124,7 +124,8 @@
     
     current_date <- web_url$headers$`last-modified`
     current_date <- gsub(".*, ", "", current_date, perl = TRUE)
-    current_date <- gsub(" [0-9][0-9]:.*", "", current_date, perl = TRUE)
+    current_date <- gsub(" [0-9][0-9]:.*", "", current_date, 
+                         perl = TRUE)
     return(current_date)
   }
   
@@ -137,7 +138,8 @@
     lines <- strsplit(text, " ")[[1]]
     current <- lines[grepl(pattern, lines)]
     current_date <- 
-      sapply(strsplit(current, " "), function(x) x[grepl("20[0-9][0-9]", x)])
+      sapply(strsplit(current, " "), 
+             function(x) x[grepl("20[0-9][0-9]", x)])
     current_date <- gsub(pattern, "", current_date)
     
     return(current_date)
@@ -152,7 +154,8 @@
     lines <- strsplit(text, "\n")[[1]]
     current <- lines[grepl(pattern, lines)]
     current_date <- 
-      sapply(strsplit(current, " "), function(x) x[grepl("20[0-9][0-9]", x)])
+      sapply(strsplit(current, " "), 
+             function(x) x[grepl("20[0-9][0-9]", x)])
     current_date <- gsub(pattern, "", current_date)
     
     return(current_date)
