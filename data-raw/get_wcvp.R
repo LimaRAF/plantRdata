@@ -236,6 +236,7 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
+             "accepted.id",
              "accepted.name",  #accepted canonical             
              "accepted.authorship",  #accepted authors             
              "accepted.taxon.rank",
@@ -251,6 +252,95 @@ if (last_updated != last_download) {
   data$accepted.taxon.status <- tolower(data$accepted.taxon.status)
   data$accepted.name.status <- tolower(data$accepted.name.status)
 
+  ## Obtaining the taxon distribution column
+  file <- all_files[grepl("dist", all_files)]
+  temp <- tempfile()
+  dist <- data.table::fread(unzip(path, files = file, exdir = temp))
+  unlink(temp)
+  
+  dist$area <- gsub(" I\\.$", " island", dist$area)
+  dist$area <- gsub(" Is\\.$", " Islands", dist$area)
+  dist$area <- plantR::prepLoc(dist$area)
+  
+  # Download botanical countries (level3)
+  url1 <- "https://github.com/tdwg/wgsrpd/raw/master/109-488-1-ED/2nd%20Edition/tblLevel3.txt"
+  path1 <- gsub("\\.zip", "_dist.txt", path)
+  utils::download.file(url = url1, destfile = path1, mode = "wb")
+  level3 <- read.table(path1, sep = "*", fileEncoding = "Latin1", 
+                     header = TRUE, stringsAsFactors = FALSE,
+                     quote = "", fill = TRUE)
+  
+  # Download subdivision of botanical countries (level4)
+  url2 <- "https://github.com/tdwg/wgsrpd/raw/master/109-488-1-ED/2nd%20Edition/tblLevel4.txt"
+  path2 <- gsub("\\.zip", "_dist1.txt", path)
+  utils::download.file(url = url2, destfile = path2, mode = "wb")
+  level4 <- read.table(path2, sep = "*", fileEncoding = "Latin1", 
+                       header = TRUE, stringsAsFactors = FALSE,
+                       quote = "", fill = TRUE)
+
+  # Merge both informations
+  level_all <- dplyr::left_join(level4, level3[, c("L3.code", "L3.area")],
+                                by = c("L3.code"))
+  level_all1 <- aggregate(L4.code ~ L3.area + L4.country,
+                          FUN = function(x) paste(unique(x), collapse = "|"),
+                          data = level_all)
+  names(level_all1) <- c("taxon.distribution.bc", "taxon.distribution.bru", "taxon.distribution.bru.code")
+  
+  # Kirgizstan case
+  level_all1$taxon.distribution.bc <- 
+    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bc, fixed = FALSE)
+  level_all1$taxon.distribution.bru <- 
+    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bru, fixed = FALSE)
+  
+  # Gambia case
+  level_all1$taxon.distribution.bc <- 
+    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bc, fixed = FALSE)
+  level_all1$taxon.distribution.bru <- 
+    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bru, fixed = FALSE)
+  
+  # Substitute 'i' by 'island' and 'is' by 'islands' to match plantR
+  level_all1$taxon.distribution.bc <- 
+    gsub(" I\\.$", " island", level_all1$taxon.distribution.bc, perl = TRUE)
+  level_all1$taxon.distribution.bc <- 
+    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bc, perl = TRUE)
+  level_all1$taxon.distribution.bru <- 
+    gsub(" I\\.$", " island", level_all1$taxon.distribution.bru, perl = TRUE)
+  level_all1$taxon.distribution.bru <- 
+    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bru, perl = TRUE)
+  
+  level_all1$taxon.distribution.bc <- 
+    plantR::prepLoc(level_all1$taxon.distribution.bc)
+  level_all1$taxon.distribution.bru <- plantR::prepLoc(level_all1$taxon.distribution.bru)
+  
+  
+  # Edit the column to match wvcvp names exactly, that is, nchar max = 20
+  level_all1$taxon.distribution.bc <- 
+    substr(level_all1$taxon.distribution.bc, 1, 20)
+  
+  dist1 <- dplyr::left_join(dist, level_all1, 
+                            by = c("area" = "taxon.distribution.bc"))
+
+  dist2 <- aggregate(taxon.distribution.bru.code ~ plant_name_id,
+                               FUN = function(x) paste(sort(unique(x)), collapse = "|"),
+                               data = dist1)
+  names(dist2) <- c("id", "taxon.distribution")
+  
+  tmp1 <- dplyr::left_join(data, dist2, by = "id")
+  
+  names(dist2) <- c("accepted.id", "taxon.distribution")
+  tmp2 <- dplyr::left_join(data, dist2, by = "accepted.id")
+  
+  stopifnot(identical(tmp1$id, tmp2$id))
+  
+  rep_these <- !is.na(tmp2$taxon.distribution)
+  tmp1$taxon.distribution[rep_these] <- 
+    tmp2$taxon.distribution[rep_these] 
+  
+  stopifnot(identical(tmp1$id, data$id))
+  
+  data$taxon.distribution <- tmp1$taxon.distribution
+  
+  
   # Saving ------------------------------------------------------------
   ## Cleaning and re-ordering
   data <- data[order(data$taxon.status), ]
@@ -262,6 +352,10 @@ if (last_updated != last_download) {
 
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
+  rep_these <- !is.na(data$accepted.id)
+  if (any(rep_these)) 
+    data$accepted.id[rep_these] <- 
+    paste0(backbone, "-", data$accepted.id[rep_these])
   
   ## How many columns and lines (in April 2024: 1,421,040; May 2024: 1,429,871)
   dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
@@ -280,5 +374,7 @@ if (last_updated != last_download) {
   write(dimensions, file.path(path_folder, "df_dim.txt"))
   write(citation, file.path(path_folder, "citation.txt"))
   unlink(path)
+  unlink(path1)
+  unlink(path2)
 }  
 rm(list = ls())

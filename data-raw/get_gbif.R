@@ -184,6 +184,7 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
+             "accepted.id",
              "accepted.name",  #accepted canonical             
              "accepted.authorship",  #accepted authors             
              "accepted.taxon.rank",
@@ -216,6 +217,10 @@ if (last_updated != last_download) {
 
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
+  rep_these <- !is.na(data$accepted.id)
+  if (any(rep_these)) 
+    data$accepted.id[rep_these] <- 
+    paste0(backbone, "-", data$accepted.id[rep_these])
   
   ## Saving
   data_split <- split(data, data$kingdom)

@@ -142,7 +142,8 @@ if (last_updated != last_download) {
                   "taxon.rank", "taxon.status", "name.status")]
   names(data1)[1] <- "accepted.id"
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
-  identical(tmp$id, data$id) # should be TRUE
+  stopifnot(identical(tmp$id, data$id)) # should be TRUE
+  
   data$accepted.name <- NA_character_
   data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
@@ -167,6 +168,7 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
+             "accepted.id",  #accepted canonical             
              "accepted.name",  #accepted canonical             
              "accepted.authorship",  #accepted authors             
              "accepted.taxon.rank",
@@ -200,7 +202,35 @@ if (last_updated != last_download) {
     "Fungi"
   table(data$higherClassification)
   
+  ## Obtaining the taxon distribution column
+  file <- all_files[grepl("dist", all_files)]
+  temp <- tempfile()
+  dist <- data.table::fread(unzip(path, files = file, exdir = temp))
+  unlink(temp)
   
+  dist <- dist[!dist$locationID %in% c("", " ", "NA"), ]
+  # dist$locationID <- gsub("BR-", "", dist$locationID, fixed = TRUE) # puco ganho de tamanho
+  dist <- aggregate(dist$locationID, list(dist$id), 
+                    function(x) paste0(sort(unique(x)), collapse = "|"))
+  names(dist) <- c("id", "taxon.distribution")
+  dist$id <- as.integer(dist$id)
+  
+  tmp <- data
+  tmp1 <- dplyr::left_join(tmp, dist, by = "id")
+  
+  names(dist) <- c("accepted.id", "taxon.distribution")
+  tmp2 <- dplyr::left_join(tmp, dist, by = "accepted.id")
+
+  stopifnot(identical(tmp1$id, tmp2$id))
+  
+  rep_these <- !is.na(tmp2$taxon.distribution)
+  tmp1$taxon.distribution[rep_these] <- 
+    tmp2$taxon.distribution[rep_these] 
+  
+  stopifnot(identical(tmp1$id, data$id))
+  
+  data$taxon.distribution <- tmp1$taxon.distribution
+    
   # Saving ------------------------------------------------------------
   # reinos <- c("Plantae", "Fungi")
   classes <- c("Tracheophyta", "Algae", "Bryophyta", "Fungi")
@@ -217,6 +247,10 @@ if (last_updated != last_download) {
 
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
+  rep_these <- !is.na(data$accepted.id)
+  if (any(rep_these)) 
+    data$accepted.id[rep_these] <- 
+      paste0(backbone, "-", data$accepted.id[rep_these])
   
   ## How many columns and lines (in May 2024: 153,089)
   # dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
@@ -238,6 +272,9 @@ if (last_updated != last_download) {
       bfoNamesAlgae <- data_split[[classes[i]]]
       bfoNamesAlgae$higherClassification <- NULL
       
+      if (all(bfoNamesAlgae$taxon.distribution %in% c("", " ", NA)))
+        bfoNamesAlgae$taxon.distribution <- NULL
+      
       usethis::use_data(bfoNamesAlgae, compress = "xz", 
                         overwrite = TRUE)
     }
@@ -246,6 +283,9 @@ if (last_updated != last_download) {
       bfoNamesBryophyta <- data_split[[classes[i]]]
       bfoNamesBryophyta$higherClassification <- NULL
       
+      if (all(bfoNamesBryophyta$taxon.distribution %in% c("", " ", NA)))
+        bfoNamesBryophyta$taxon.distribution <- NULL
+      
       usethis::use_data(bfoNamesBryophyta, compress = "xz", 
                         overwrite = TRUE)
     }
@@ -253,6 +293,9 @@ if (last_updated != last_download) {
     if (classes[i] == "Fungi") {
       bfoNamesFungi <- data_split[[classes[i]]]
       bfoNamesFungi$higherClassification <- NULL
+      
+      if (all(bfoNamesFungi$taxon.distribution %in% c("", " ", NA)))
+        bfoNamesFungi$taxon.distribution <- NULL
       
       usethis::use_data(bfoNamesFungi, compress = "xz", 
                         overwrite = TRUE)

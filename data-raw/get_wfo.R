@@ -103,6 +103,7 @@ if (last_updated != last_download) {
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, etc
+             "accepted.id",
              "accepted.name",  #accepted canonical             
              "accepted.authorship",  #accepted authors             
              "accepted.taxon.rank",
@@ -118,6 +119,9 @@ if (last_updated != last_download) {
   data$accepted.taxon.status <- tolower(data$accepted.taxon.status)
   data$accepted.name.status <- tolower(data$accepted.name.status)
   data$phylum[data$phylum %in% "A"] <- "Magnoliophyta"
+  
+  rep_these <- data$accepted.id %in% c("", " ", NA)
+  data$accepted.id[rep_these] <- NA
   
   # Saving ------------------------------------------------------------
   ## Cleaning and re-ordering
