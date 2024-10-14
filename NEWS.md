@@ -1,3 +1,11 @@
+# plantRdata 0.0.4
+
+* Adding the 'accepted.id' column to all taxonomic backbones for consistency
+
+* Adding the 'taxonomic.distribition' column to the BFO and WCVP taxonomic backbones
+
+* Updating WFO and BFO backbone versions
+
 
 # plantRdata 0.0.3
 
