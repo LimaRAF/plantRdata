@@ -93,6 +93,44 @@ if (last_updated != last_download) {
   data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
+  ## Any missing accepted names?
+  rep_these <- !data$accepted.id %in% c("", " ", NA) & 
+                data$accepted.name %in% c("", " ", NA)
+  if (any(rep_these)) {
+    tmp <- data[rep_these, "accepted.id", drop = FALSE]
+    names(tmp)[1] <- "id"
+    col2rep <- c("accepted.name", "accepted.authorship", 
+                 "accepted.taxon.rank", "accepted.taxon.status", 
+                 "accepted.name.status")
+    data1 <- data[, c("id", "accepted.id", col2rep)]
+    tmp1 <- dplyr::left_join(tmp, data1, by = "id")
+    
+    check_these <- is.na(tmp1$accepted.name)
+    if (any(check_these)) {
+      
+      check_ids <- tmp1$accepted.id[check_these]
+      data1 <- data[match(check_ids, data$accepted.id),]
+      data1 <- unique(data1[data1$taxon.status %in% "accepted", ])
+      
+      check_ids <- tmp1$id[check_these]
+      data2 <- data[match(check_ids, data$accepted.id),]
+      data2 <- unique(data2[data2$taxon.status %in% "accepted", ])
+      data3 <- unique(rbind.data.frame(data1, data2))
+      
+      col2rep1 <- c("name", "authorship", "taxon.rank", 
+                    "taxon.status", "name.status")
+      tmp2 <- dplyr::left_join(tmp1[check_these,], 
+                               data3[, c("accepted.id", col2rep1)], 
+                               by = "accepted.id")
+      
+      tmp1[check_these, c("accepted.id", col2rep)] <- 
+        tmp2[, c("id", col2rep1)] 
+    }
+    
+    data[rep_these, c("accepted.id", col2rep)] <- 
+      tmp1[, c("accepted.id", col2rep)] 
+  }
+  
   ## Organizing fields
   cols1 <- c("id",
              "phylum",

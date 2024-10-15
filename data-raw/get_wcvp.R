@@ -214,7 +214,7 @@ if (last_updated != last_download) {
   table(data1$name.status, data1$taxon.status)
   names(data1)[1] <- "accepted.id"
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
-  identical(tmp$id, data$id) # should be TRUE
+  stopifnot(identical(tmp$id, data$id)) # should be TRUE
   data$accepted.name <- NA_character_
   data$accepted.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
@@ -227,6 +227,22 @@ if (last_updated != last_download) {
   data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
+  ## Any missing accepted names?
+  rep_these <- !data$accepted.id %in% c("", " ", NA) & 
+                  data$accepted.name %in% c("", " ", NA) &
+                    data$id != data$accepted.id
+  if (any(rep_these)) {
+    tmp <- data[rep_these, "accepted.id", drop = FALSE]
+    names(tmp)[1] <- "id"
+    
+    col2rep <- c("name", "authorship", "taxon.rank", 
+                  "taxon.status", "name.status")
+    data1 <- data[, c("id", "accepted.id", col2rep)]
+    tmp1 <- dplyr::left_join(tmp, data1, by = "id")
+    
+    data[rep_these, col2rep] <-  tmp1[, col2rep] 
+  }
+
   ## Organizing fields
   cols1 <- c("id",
              "family", # "genus", "specific.epiteth", "infra.epiteth",

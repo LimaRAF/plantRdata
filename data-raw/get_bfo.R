@@ -107,12 +107,51 @@ if (last_updated != last_download) {
   
   
   # Editing data --------------------------------------------------
+  ## adding missing accepted names
+  miss_ids <- unique(
+    data$acceptedNameUsageID[!data$acceptedNameUsageID %in% unique(data$id)])
+  miss_ids <- miss_ids[!miss_ids %in% c("", " ", NA)]
+  if (length(miss_ids) > 0) {
+    miss_data <- data[data$acceptedNameUsageID %in% miss_ids, ]
+    miss_data$taxonID <- miss_data$acceptedNameUsageID 
+    miss_data$acceptedNameUsageID <- NA
+
+    miss_data$scientificName <- miss_data$acceptedNameUsage
+    miss_data$acceptedNameUsage <- NA
+    miss_data$parentNameUsage <- NA
+    miss_data$higherClassification <- NA
+    miss_data$nomenclaturalStatus <- "valid"
+    miss_data$taxonomicStatus <- "accepted"
+    
+    miss_data$id <- miss_data$taxonID
+    miss_data$parentNameUsageID <- NA
+    miss_data$namePublishedInYear <- NA
+    miss_data$namePublishedIn <- NA
+    miss_data$originalNameUsageID <- NA
+    miss_data$genus <- NA
+    miss_data$specificEpithet <- NA
+    miss_data$infraspecificEpithet <- NA
+    miss_data$modified <- NA
+    miss_data$bibliographicCitation <- NA
+    miss_data$references <- NA
+
+    x <- data.frame(scientificName = miss_data$scientificName)
+    tmp <- plantR::fixSpecies(x)
+    
+    miss_data$taxon_name <- tmp$scientificName.new
+    miss_data$scientificNameAuthorship <- 
+      tmp$scientificNameAuthorship.new
+    
+    miss_data1 <- unique(miss_data)
+    
+    data <- rbind.data.frame(data, miss_data1)
+  }
+  
   ## filtering and standardizing important column names
   cols <- c("taxonID", "higherClassification" ,"phylum", "family", 
             "taxon_name", "scientificNameAuthorship",
             "taxonRank", "nomenclaturalStatus", "taxonomicStatus", 
             "acceptedNameUsageID", "kingdom", "scientificName") 
-
   data <- as.data.frame(data)[, cols]
   names(data) <- c("id", "higherClassification", "phylum", "family", 
                    "name", "authorship", 
@@ -134,13 +173,14 @@ if (last_updated != last_download) {
     Encoding(data$name[rep_these]) <- "UTF-8"
     data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
   }
-  
+
   ## obtaining the accepted.name column
   rep_these <- is.na(data$accepted.id)
   data1 <- data[rep_these, 
                 c("id", "name", "authorship", 
                   "taxon.rank", "taxon.status", "name.status")]
   names(data1)[1] <- "accepted.id"
+  data1 <- data1[!duplicated(data1$accepted.id), ]
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   stopifnot(identical(tmp$id, data$id)) # should be TRUE
   
@@ -155,6 +195,44 @@ if (last_updated != last_download) {
   data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
   data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
+  
+  ## Any missing accepted names?
+  rep_these <- !is.na(data$accepted.id) & is.na(data$accepted.name)
+  if (any(rep_these)) {
+    tmp <- data[rep_these, "accepted.id", drop = FALSE]
+    names(tmp)[1] <- "id"
+    col2rep <- c("accepted.name", "accepted.authorship", 
+                 "accepted.taxon.rank", "accepted.taxon.status", 
+                 "accepted.name.status")
+    data1 <- data[, c("id", "accepted.id", col2rep)]
+    tmp1 <- dplyr::left_join(tmp, data1, by = "id")
+    
+    check_these <- is.na(tmp1$accepted.name)
+    if (any(check_these)) {
+      
+      check_ids <- tmp1$accepted.id[check_these]
+      data1 <- data[match(check_ids, data$accepted.id),]
+      data1 <- unique(data1[data1$taxon.status %in% "accepted", ])
+      
+      check_ids <- tmp1$id[check_these]
+      data2 <- data[match(check_ids, data$accepted.id),]
+      data2 <- unique(data2[data2$taxon.status %in% "accepted", ])
+      data3 <- unique(rbind.data.frame(data1, data2))
+      
+      # names(tmp) <- "accepted.id"
+      col2rep1 <- c("name", "authorship", "taxon.rank", 
+                    "taxon.status", "name.status")
+      tmp2 <- dplyr::left_join(tmp1[check_these,], 
+                               data3[, c("accepted.id", col2rep1)], 
+                               by = "accepted.id")
+      
+      tmp1[check_these, c("accepted.id", col2rep)] <- 
+        tmp2[, c("id", col2rep1)] 
+    }
+
+    data[rep_these, c("accepted.id", col2rep)] <- 
+      tmp1[, c("accepted.id", col2rep)] 
+  }
   
   ## Organizing fields
   cols1 <- c("id",
