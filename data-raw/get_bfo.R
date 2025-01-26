@@ -147,6 +147,34 @@ if (last_updated != last_download) {
     data <- rbind.data.frame(data, miss_data1)
   }
   
+  ## adding missing info for synonyms (probably basionyms)
+  miss_syn <- data$taxonomicStatus %in% "synonym" &
+                data$acceptedNameUsageID %in% c("", " ", NA) &
+                  !data$originalNameUsageID %in% c("", " ", NA)
+  if (any(miss_syn)) {
+    miss_data <- data[miss_syn, ]
+    originals <- miss_data$originalNameUsageID
+    accepted.ids <- data[data$taxonID %in% originals, ]
+    synonym.ids <- 
+      accepted.ids[accepted.ids$taxonomicStatus %in% "synonym" &
+                     !accepted.ids$acceptedNameUsageID %in% c("", " ", NA),]
+    accepted.ids <- 
+      accepted.ids[accepted.ids$taxonomicStatus %in% "accepted",]
+    
+    if (dim(accepted.ids)[1] > 0)
+      miss_data$acceptedNameUsageID <- 
+        accepted.ids$taxonID[match(miss_data$originalNameUsageID, accepted.ids$taxonID)]
+    
+    if (dim(synonym.ids)[1] > 0) {
+      rep_ids <- miss_data$acceptedNameUsageID %in% c("", " ", NA)
+      miss_data$acceptedNameUsageID[rep_ids] <- 
+        synonym.ids$acceptedNameUsageID[match(miss_data$originalNameUsageID[rep_ids],
+                                              synonym.ids$taxonID)]
+    }
+    data$acceptedNameUsageID[miss_syn] <-
+      miss_data$acceptedNameUsageID
+  }
+  
   ## filtering and standardizing important column names
   cols <- c("taxonID", "higherClassification" ,"phylum", "family", 
             "taxon_name", "scientificNameAuthorship",
