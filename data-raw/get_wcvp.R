@@ -108,6 +108,9 @@ if (last_updated != last_download) {
     data$taxon.rank[data$taxon.rank %in% patts[i]] <- names(patts)[i]
   }
   
+  ## As in Apr 2025, WCVP has no family or order names to be added to
+  ## the backbone
+  
   ## Editing of name status
   status <- tolower(.squish(data$name.status))
   status <- gsub(", , ", ", ", status, perl = TRUE)

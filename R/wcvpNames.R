@@ -3,28 +3,29 @@
 #' @description A dataset containing the most relevant taxonomic
 #'   information of plant names stored in the [World Checklist of Vascular Plants](https://powo.science.kew.org/), 
 #'   taxonomic backbone including vascular plants (i.e. licophytes,
-#'   ferns, gymnosperms and angiosperms) and all taxonomic levels
-#'   (i.e. infra-species, species, genus, family and so on).
-#'   Bryophytes are not included. \cr\cr The original backbone was
-#'   edited aiming to standardize the notation across
-#'   backbones in `plantRdata`. Many columns in the original
-#'   source that were not essential for the process of taxon name
-#'   checking were removed and most of them were renamed. Duplicated
-#'   scientific names (i.e. taxon name + author) whose taxon status
-#'   were not accepted were also removed to avoid possible problems in
-#'   the taxon name matching process. \cr\cr The original column with
-#'   the taxonomic status was simplified to macth other backbones and
-#'   have the following categories: accepted, synonyms, unplaced
-#'   and blank (i.e. empty status). Original categories 'Artificial
-#'   Hybrid', 'Local Biotype' and 'Orthographic' were converted to
-#'   'accepted', 'accepted' and 'synonym', excepted when the
-#'   nomenclatural remarks suggested otherwise. Other original
-#'   categories (i.e. Illegitimate, Invalid and Misapplied) were left
-#'   as blanks. All original categories were moved to the
-#'   nomenclatural remarks column for consistency. For WCVP, the
-#'   original nomenclatural remarks was very rich information but it
-#'   had to be simplified to facilitate the understanding of the
-#'   output of name matching process to the final users.
+#'   ferns, gymnosperms and angiosperms) and taxonomic levels up to
+#'   genus level (i.e. infra-species, species and genus). WCVP
+#'   currently has no information on family and order names or
+#'   Bryophytes. \cr\cr The original backbone was edited aiming to
+#'   standardize the notation across backbones in `plantRdata`. Many
+#'   columns in the original source that were not essential for the
+#'   process of taxon name checking were removed and most of them were
+#'   renamed. Duplicated scientific names (i.e. taxon name + author)
+#'   whose taxon status were not accepted were also removed to avoid
+#'   possible problems in the taxon name matching process. \cr\cr The
+#'   original column with the taxonomic status was simplified to macth
+#'   other backbones and have the following categories: accepted,
+#'   synonyms, unplaced and blank (i.e. empty status). Original
+#'   categories 'Artificial Hybrid', 'Local Biotype' and
+#'   'Orthographic' were converted to 'accepted', 'accepted' and
+#'   'synonym', excepted when the nomenclatural remarks suggested
+#'   otherwise. Other original categories (i.e. Illegitimate, Invalid
+#'   and Misapplied) were left as blanks. All original categories were
+#'   moved to the nomenclatural remarks column for consistency. For
+#'   WCVP, the original nomenclatural remarks was very rich
+#'   information but it had to be simplified to facilitate the
+#'   understanding of the output of name matching process to the final
+#'   users.
 #'
 #' @source \url{https://sftp.kew.org/pub/data-repositories/WCVP/}
 #' @evalRd .readScript("data-raw/wcvp/last_update.txt", 

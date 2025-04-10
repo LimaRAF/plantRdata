@@ -68,6 +68,16 @@ if (last_updated != last_download) {
   data$taxon_name[check_these] <- 
     plantR:::addRank(data$taxon_name[check_these], "f.")
   
+  ## Adding missing taxonomic ranks up to order (vascular plant order
+  ## not available in BFO, eg. FABALES, in Apr 2025)
+  check_these <- data$taxonRank %in% "FAMILIA"
+  if (any(check_these))
+    data$taxon_name[check_these] <- data$family[check_these]
+  
+  check_these <- data$taxonRank %in% "ORDEM"
+  if (any(check_these))
+    data$taxon_name[check_these] <- data$order[check_these]
+
   ## Standardizing taxon ranks
   patts <- c("ORDEM", "FAMILIA", "GENERO", "ESPECIE", "VARIEDADE",
              "SUB_ESPECIE", "CLASSE", "TRIBO", "SUB_FAMILIA", 

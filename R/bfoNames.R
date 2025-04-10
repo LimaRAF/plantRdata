@@ -31,14 +31,17 @@
 #'   [Brazilian Flora 2020](https://floradobrasil.jbrj.gov.br/consulta/)
 #'   taxonomic backbone, a.k.a. the Flora and Funga of Brazil. It
 #'   includes all taxonomic levels (i.e. infra-species, species,
-#'   genus, family and so on).\cr\cr The original backbone was
-#'   slightly edited aiming to standardize the notation across all
-#'   backbones in `plantRdata`. Many columns in the original
-#'   source that were not essential for the process of taxon name
-#'   checking were removed and most of them were renamed. Duplicated
-#'   scientific names (i.e. taxon name + author) whose taxon status
-#'   were not accepted were also removed to avoid possible problems in
-#'   the taxon name matching process.
+#'   genus, family and so on). However, this backbone currently does
+#'   not have information of order names for all phyllum. For vascular
+#'   plants inforation is available only at the family level or
+#'   lower (i.e. genus, species and infra-species).\cr\cr The original
+#'   backbone was slightly edited aiming to standardize the notation
+#'   across all backbones in `plantRdata`. Many columns in the
+#'   original source that were not essential for the process of taxon
+#'   name checking were removed and most of them were renamed.
+#'   Duplicated scientific names (i.e. taxon name + author) whose
+#'   taxon status were not accepted were also removed to avoid
+#'   possible problems in the taxon name matching process.
 #'
 #' @evalRd .readScript("data-raw/bfo/last_update.txt", 
 #'  "Last update/change of the downloaded backbone (day month year):")

@@ -31,6 +31,6 @@ taxon name matching process.
 }
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (day month year):
-\code{01 Nov 2024}.}
+\code{01 Apr 2025}.}
 \references{
 \code{Flora e Funga do Brasil (Constantly updated): Flora e Funga do Brasil project - Projeto Flora e Funga do Brasil. Instituto de Pesquisas Jardim Botânico do Rio de Janeiro. Dataset/Checklist. doi:10.15468/1mtkaw}.}
