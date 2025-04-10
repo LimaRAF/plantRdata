@@ -1,3 +1,10 @@
+# plantRdata 0.0.5
+
+* Adding the information on the family and order levels to the BFO backbones. However, as of now, both BFO and WCVP have incomplete or no taxonomic information at those levels. They were already present for the other backbones (WFO and GBIF)
+
+* Updating WFO and BFO backbone versions
+
+
 # plantRdata 0.0.4
 
 * Adding the 'accepted.id' column to all taxonomic backbones for consistency
@@ -13,6 +20,7 @@
 
 * Updating documentation and fixing a bug in package built (data folder not in package tar.gz)
 
+
 # plantRdata 0.0.2
 
 * Addition of the another taxonomic backbones: BFO
@@ -20,6 +28,7 @@
 * Updating WCVP backbone
 
 * Fixing test check error
+
 
 # plantRdata 0.0.1
 
