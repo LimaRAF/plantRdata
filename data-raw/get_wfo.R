@@ -49,13 +49,13 @@ if (last_updated != last_download) {
             "nomenclaturalStatus", "taxonomicStatus", 
             "acceptedNameUsageID") 
   data <- as.data.frame(data)[, cols]
-  names(data) <- c("id", "phylum", "family", "name", "authorship", 
+  names(data) <- c("id", "phylum", "family", "tax.name", "tax.authorship", 
                    "taxon.rank", "name.status", "taxon.status", 
                    "accepted.id")
   
   ## fixing non-ASCII characters encoding to UTF-8 to avoid R CDM Check warnings
-  Encoding(data$authorship) <- "UTF-8"
-  data$authorship <- iconv(data$authorship, "UTF-8", "UTF-8")
+  Encoding(data$tax.authorship) <- "UTF-8"
+  data$tax.authorship <- iconv(data$tax.authorship, "UTF-8", "UTF-8")
   
   rep_these <- grepl("\u00d7", data$name)
   if (any(rep_these)) {
@@ -71,41 +71,41 @@ if (last_updated != last_download) {
 
   ## obtaining the scientific.name (taxon names + authors)
   data$scientific.name <-
-    .buildName(data, col.names = c("name", "authorship"))
+    .buildName(data, col.names = c("tax.name", "tax.authorship"))
   
   ## obtaining the accepted.name column
   rep_these <- data$accepted.id %in% c("", " ", NA, "NA")
   data1 <- data[rep_these, 
-                c("id", "name", "authorship", 
+                c("id", "tax.name", "tax.authorship", 
                   "taxon.rank", "taxon.status", "name.status")]
   names(data1)[1] <- "accepted.id" 
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
-  data$accepted.name <- NA_character_
-  data$accepted.authorship <- NA_character_
+  data$accepted.tax.name <- NA_character_
+  data$accepted.tax.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
   data$accepted.taxon.status <- NA_character_
   data$accepted.name.status <- NA_character_
   
-  data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
-  data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
+  data$accepted.tax.name[!rep_these] <- tmp$tax.name.y[!rep_these]
+  data$accepted.tax.authorship[!rep_these] <- tmp$tax.authorship.y[!rep_these]
   data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
   data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
   
   ## Any missing accepted names?
   rep_these <- !data$accepted.id %in% c("", " ", NA) & 
-                data$accepted.name %in% c("", " ", NA)
+                data$accepted.tax.name %in% c("", " ", NA)
   if (any(rep_these)) {
     tmp <- data[rep_these, "accepted.id", drop = FALSE]
     names(tmp)[1] <- "id"
-    col2rep <- c("accepted.name", "accepted.authorship", 
+    col2rep <- c("accepted.tax.name", "accepted.tax.authorship", 
                  "accepted.taxon.rank", "accepted.taxon.status", 
                  "accepted.name.status")
     data1 <- data[, c("id", "accepted.id", col2rep)]
     tmp1 <- dplyr::left_join(tmp, data1, by = "id")
     
-    check_these <- is.na(tmp1$accepted.name)
+    check_these <- is.na(tmp1$accepted.tax.name)
     if (any(check_these)) {
       
       check_ids <- tmp1$accepted.id[check_these]
@@ -117,7 +117,7 @@ if (last_updated != last_download) {
       data2 <- unique(data2[data2$taxon.status %in% "accepted", ])
       data3 <- unique(rbind.data.frame(data1, data2))
       
-      col2rep1 <- c("name", "authorship", "taxon.rank", 
+      col2rep1 <- c("tax.name", "tax.authorship", "taxon.rank", 
                     "taxon.status", "name.status")
       tmp2 <- dplyr::left_join(tmp1[check_these,], 
                                data3[, c("accepted.id", col2rep1)], 
@@ -135,15 +135,15 @@ if (last_updated != last_download) {
   cols1 <- c("id",
              "phylum",
              "family",
-             "name", # genus + epiteth + infra.epiteth (canonical)
-             "authorship", # name author
+             "tax.name", # genus + epiteth + infra.epiteth (canonical)
+             "tax.authorship", # name author
              "scientific.name", # name + authors
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, etc
              "accepted.id",
-             "accepted.name",  #accepted canonical             
-             "accepted.authorship",  #accepted authors             
+             "accepted.tax.name",  #accepted canonical             
+             "accepted.tax.authorship",  #accepted authors             
              "accepted.taxon.rank",
              "accepted.taxon.status",
              "accepted.name.status") 

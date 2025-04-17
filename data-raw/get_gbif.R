@@ -59,13 +59,13 @@ if (last_updated != last_download) {
             "acceptedNameUsageID", "kingdom", "taxonRemarks") 
   data <- as.data.frame(data)[, cols]
   names(data) <- c("id", "phylum", "family", "scientific.name", 
-                   "name", "authorship", "taxon.rank", 
+                   "tax.name", "tax.authorship", "taxon.rank", 
                    "name.status", "taxon.status", 
                    "accepted.id", "kingdom", "taxon.remarks")
   
   ## fixing non-ASCII characters encoding to UTF-8 to avoid R CDM Check warnings
-  Encoding(data$authorship) <- "UTF-8"
-  data$authorship <- iconv(data$authorship, "UTF-8", "UTF-8")
+  Encoding(data$tax.authorship) <- "UTF-8"
+  data$tax.authorship <- iconv(data$tax.authorship, "UTF-8", "UTF-8")
   
   rep_these <- grepl("\u00d7", data$name) 
   if (any(rep_these)) {
@@ -155,20 +155,20 @@ if (last_updated != last_download) {
 
   ## obtaining the accepted.name column
   rep_these <- data$accepted.id %in% c("", " ", NA, "NA")
-  data1 <- data[rep_these, c("id", "name", "authorship", 
+  data1 <- data[rep_these, c("id", "tax.name", "tax.authorship", 
                              "taxon.rank", "taxon.status", "name.status")]
   names(data1)[1] <- "accepted.id" 
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   identical(tmp$id, data$id) # should be TRUE
   # rep_these <- !data$accepted.id %in% c("", " ", NA, "NA")
-  data$accepted.name <- NA_character_
-  data$accepted.authorship <- NA_character_
+  data$accepted.tax.name <- NA_character_
+  data$accepted.tax.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
   data$accepted.taxon.status <- NA_character_
   data$accepted.name.status <- NA_character_
   
-  data$accepted.name[!rep_these] <- tmp$name.y[!rep_these]
-  data$accepted.authorship[!rep_these] <- tmp$authorship.y[!rep_these]
+  data$accepted.tax.name[!rep_these] <- tmp$tax.name.y[!rep_these]
+  data$accepted.tax.authorship[!rep_these] <- tmp$tax.authorship.y[!rep_these]
   data$accepted.taxon.rank[!rep_these] <- tmp$taxon.rank.y[!rep_these]
   data$accepted.taxon.status[!rep_these] <- tmp$taxon.status.y[!rep_these]
   data$accepted.name.status[!rep_these] <- tmp$name.status.y[!rep_these]
@@ -178,15 +178,15 @@ if (last_updated != last_download) {
              "kingdom",
              "phylum",
              "family", # "genus", "specific.epiteth", "infra.epiteth",
-             "name", # genus + epiteth + infra.epiteth
-             "authorship", # name author
+             "tax.name", # genus + epiteth + infra.epiteth
+             "tax.authorship", # name author
              "scientific.name", # name + authors
              "taxon.rank", # species, genus, family, order, etc.
              "taxon.status", # accepted or synonym
              "name.status", # correct, ilegitimate, legitimate, but incorrect, orthographical variant, missapplied, not validly published, rejected
              "accepted.id",
-             "accepted.name",  #accepted canonical             
-             "accepted.authorship",  #accepted authors             
+             "accepted.tax.name",  #accepted canonical             
+             "accepted.tax.authorship",  #accepted authors             
              "accepted.taxon.rank",
              "accepted.taxon.status",
              "accepted.name.status") 
