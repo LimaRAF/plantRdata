@@ -66,24 +66,24 @@ if (last_updated != last_download) {
   Encoding(data$tax.authorship) <- "UTF-8"
   data$tax.authorship <- iconv(data$tax.authorship, "UTF-8", "UTF-8")
   
-  rep_these <- grepl("\u00d7", data$name)
+  rep_these <- grepl("\u00d7", data$tax.name)
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
   
-  rep_these <- grepl("\u00eb", data$name) | 
-                grepl("\u00fc", data$name) |
-                grepl("\u00e8", data$name) |
-                grepl("\u00f6", data$name)
+  rep_these <- grepl("\u00eb", data$tax.name) | 
+                grepl("\u00fc", data$tax.name) |
+                grepl("\u00e8", data$tax.name) |
+                grepl("\u00f6", data$tax.name)
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
 
-  rep_these <- grepl("\u0430", data$name)
+  rep_these <- grepl("\u0430", data$tax.name)
   if (any(rep_these))
-    data$name[rep_these] <- gsub("\u0430", "a", data$name[rep_these])
+    data$tax.name[rep_these] <- gsub("\u0430", "a", data$tax.name[rep_these])
 
   ## obtaining the scientific.name (taxon names + authors)
   data$scientific.name <- 

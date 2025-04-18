@@ -200,16 +200,16 @@ if (last_updated != last_download) {
   Encoding(data$tax.authorship) <- "UTF-8"
   data$tax.authorship <- iconv(data$tax.authorship, "UTF-8", "UTF-8")
 
-  rep_these <- grepl("\u00d7", data$name) 
+  rep_these <- grepl("\u00d7", data$tax.name) 
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
   
-  rep_these <- grepl("\u00eb", data$name) | grepl("\u00fc", data$name)
+  rep_these <- grepl("\u00eb", data$tax.name) | grepl("\u00fc", data$tax.name)
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
 
   ## obtaining the accepted.name column
@@ -301,8 +301,10 @@ if (last_updated != last_download) {
   data$accepted.name.status <- tolower(data$accepted.name.status)
   
   ## Higher class editing
-  data$higherClassification <- gsub("Flora e Funga;", "", data$higherClassification)
-  data$higherClassification <- gsub(";.*", "", data$higherClassification)
+  data$higherClassification <- 
+    gsub("Flora e Funga;", "", data$higherClassification)
+  data$higherClassification <- 
+    gsub(";.*", "", data$higherClassification)
   rep_these <- data$phylum %in% "Ascomycota" & 
                 data$higherClassification %in% "Angiospermas"
   if (any(rep_these))
@@ -325,7 +327,7 @@ if (last_updated != last_download) {
   unlink(temp)
   
   dist <- dist[!dist$locationID %in% c("", " ", "NA"), ]
-  # dist$locationID <- gsub("BR-", "", dist$locationID, fixed = TRUE) # puco ganho de tamanho
+  # dist$locationID <- gsub("BR-", "", dist$locationID, fixed = TRUE) # pouco ganho de tamanho
   dist <- aggregate(dist$locationID, list(dist$id), 
                     function(x) paste0(sort(unique(x)), collapse = "|"))
   names(dist) <- c("id", "taxon.distribution")
@@ -352,7 +354,7 @@ if (last_updated != last_download) {
   classes <- c("Tracheophyta", "Algae", "Bryophyta", "Fungi")
   
   ## Cleaning and re-ordering
-  data <- data[!data$name %in% c("", NA, " ", "NA"), ]
+  data <- data[!data$tax.name %in% c("", NA, " ", "NA"), ]
   data <- data[order(data$taxon.status), ]
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[!duplicated(paste0(data$higherClassification, data$scientific.name)), ]

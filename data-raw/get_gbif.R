@@ -67,34 +67,36 @@ if (last_updated != last_download) {
   Encoding(data$tax.authorship) <- "UTF-8"
   data$tax.authorship <- iconv(data$tax.authorship, "UTF-8", "UTF-8")
   
-  rep_these <- grepl("\u00d7", data$name) 
+  rep_these <- grepl("\u00d7", data$tax.name) 
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- 
+      iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
   
-  rep_these <- grepl("\u00eb", data$name) | grepl("\u00fc", data$name)
+  rep_these <- grepl("\u00eb", data$tax.name) | grepl("\u00fc", data$tax.name)
   if (any(rep_these)) {
-    Encoding(data$name[rep_these]) <- "UTF-8"
-    data$name[rep_these] <- iconv(data$name[rep_these], "UTF-8", "UTF-8")
+    Encoding(data$tax.name[rep_these]) <- "UTF-8"
+    data$tax.name[rep_these] <- 
+      iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
   }
   
   ## obtaining the scientific.name (taxon names + authors)
   data$scientific.name <- .squish(data$scientific.name)
-  data$name <- .squish(data$name)
+  data$tax.name <- .squish(data$tax.name)
   
   ## Adding the ranks to the the canonical name
   check_these <- data$taxon.rank %in% "variety"
-  data$name[check_these] <- 
-    plantR:::addRank(data$name[check_these], "var.")
+  data$tax.name[check_these] <- 
+    plantR:::addRank(data$tax.name[check_these], "var.")
 
   check_these <- data$taxon.rank %in% "subspecies"
-  data$name[check_these] <- 
-    plantR:::addRank(data$name[check_these], "subsp.")
+  data$tax.name[check_these] <- 
+    plantR:::addRank(data$tax.name[check_these], "subsp.")
   
   check_these <- data$taxon.rank %in% "form"
-  data$name[check_these] <- 
-    plantR:::addRank(data$name[check_these], "f.")
+  data$tax.name[check_these] <- 
+    plantR:::addRank(data$tax.name[check_these], "f.")
   
   ## Standardizing taxon ranks
   # table(data$taxon.rank)
@@ -204,10 +206,10 @@ if (last_updated != last_download) {
   reinos <- c("Plantae", "Fungi", "Animalia")
   
   ## Cleaning and re-ordering
-  data <- data[!data$name %in% c("", NA, " ", "NA", reinos), ]
-  data <- data[!grepl("? ", data$name, fixed = TRUE), ]
-  data <- data[!grepl(" ?", data$name, fixed = TRUE), ]
-  data <- data[!grepl("\\?$", data$name, perl = TRUE), ]
+  data <- data[!data$tax.name %in% c("", NA, " ", "NA", reinos), ]
+  data <- data[!grepl("? ", data$tax.name, fixed = TRUE), ]
+  data <- data[!grepl(" ?", data$tax.name, fixed = TRUE), ]
+  data <- data[!grepl("\\?$", data$tax.name, perl = TRUE), ]
   data <- data[order(data$taxon.status), ]
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[order(data$id), ]
