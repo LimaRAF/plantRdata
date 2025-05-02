@@ -2,9 +2,10 @@ citHeader("To cite plantRdata in publications use:")
 
 bibentry(
   bibtype = "Manual",
-  title   = "plantRdata: {An} {R} package to ...",
-  author  = c(person("Lima Renato")),
-  year    = "2024",
-  note    = "R package version 0.0.0.9000",
-  url     = "https://github.com/LimaRAF/plantRdata"
+  title   = "plantRdata: Accessory Datasets for Package  plantR",
+  author  = c(person("Renato A. F. de Lima")),
+  year    = "2025",
+  note    = "R package version 0.0.6",
+  url     = "https://github.com/LimaRAF/plantRdata",
+  textVersion = "Lima, R.A.F. (2025). plantRdata: Accessory Datasets for Package  plantR. R package version 0.0.6. Available at: https://github.com/LimaRAF/plantRdata"
 )
