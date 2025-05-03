@@ -28,7 +28,7 @@ testthat::test_that("Testing .getUpdates", {
   url0 <- "https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/"
   zip <- "WFO_Backbone.zip"
   bb <- "wfo"
-  last_updated <- plantRdata:::.getUpdates(url0, bb, zip)
+  last_updated <- .getUpdates(url0, bb, zip)
   path <- all_files[grepl(bb, all_files)]
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
@@ -36,7 +36,7 @@ testthat::test_that("Testing .getUpdates", {
   url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
   zip <- "wcvp.zip"
   bb <- "wcvp"
-  last_updated <- plantRdata:::.getUpdates(url0, bb, zip)
+  last_updated <- .getUpdates(url0, bb, zip)
   path <- all_files[grepl(bb, all_files)]
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
@@ -44,7 +44,7 @@ testthat::test_that("Testing .getUpdates", {
   url0 <- "https://hosted-datasets.gbif.org/datasets/backbone/current/"
   zip <- "backbone.zip"
   bb <- "gbif"
-  last_updated <- plantRdata:::.getUpdates(url0, bb, zip)
+  last_updated <- .getUpdates(url0, bb, zip)
   path <- all_files[grepl(bb, all_files)]
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
@@ -52,7 +52,7 @@ testthat::test_that("Testing .getUpdates", {
   url0 <- "https://ipt.jbrj.gov.br/jbrj/archive.do?r=lista_especies_flora_brasil"
   zip <- "bfo.zip"
   bb <- "bfo"
-  last_updated <- plantRdata:::.getUpdates(url0, bb, zip)
+  last_updated <- .getUpdates(url0, bb, zip)
   path <- all_files[grepl(bb, all_files)]
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
