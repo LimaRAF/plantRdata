@@ -25,7 +25,7 @@ testthat::test_that("Testing .getUpdates", {
     system.file("testdata", package = "plantRdata"), 
     full.names = TRUE)
   
-  url0 <- "https://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/"
+  url0 <- "http://files.worldfloraonline.org/files/WFO_Backbone/_WFOCompleteBackbone/"
   zip <- "WFO_Backbone.zip"
   bb <- "wfo"
   last_updated <- .getUpdates(url0, bb, zip)
@@ -33,7 +33,7 @@ testthat::test_that("Testing .getUpdates", {
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
   
-  url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
+  url0 <- "http://sftp.kew.org/pub/data-repositories/WCVP/"
   zip <- "wcvp.zip"
   bb <- "wcvp"
   last_updated <- .getUpdates(url0, bb, zip)
@@ -41,7 +41,7 @@ testthat::test_that("Testing .getUpdates", {
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
   
-  url0 <- "https://hosted-datasets.gbif.org/datasets/backbone/current/"
+  url0 <- "http://hosted-datasets.gbif.org/datasets/backbone/current/"
   zip <- "backbone.zip"
   bb <- "gbif"
   last_updated <- .getUpdates(url0, bb, zip)
@@ -49,7 +49,7 @@ testthat::test_that("Testing .getUpdates", {
   data <- readLines(path)
   testthat::expect_equal(last_updated, data)
   
-  url0 <- "https://ipt.jbrj.gov.br/jbrj/archive.do?r=lista_especies_flora_brasil"
+  url0 <- "http://ipt.jbrj.gov.br/jbrj/archive.do?r=lista_especies_flora_brasil"
   zip <- "bfo.zip"
   bb <- "bfo"
   last_updated <- .getUpdates(url0, bb, zip)
