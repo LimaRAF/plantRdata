@@ -240,10 +240,13 @@ if (last_updated != last_download) {
     
     col2rep <- c("tax.name", "tax.authorship", "taxon.rank", 
                   "taxon.status", "name.status")
+    accepted.col2rep <- c("accepted.tax.name", "accepted.tax.authorship", 
+                          "accepted.taxon.rank", 
+                          "accepted.taxon.status", "accepted.name.status")
     data1 <- data[, c("id", "accepted.id", col2rep)]
     tmp1 <- dplyr::left_join(tmp, data1, by = "id")
     
-    data[rep_these, col2rep] <-  tmp1[, col2rep] 
+    data[rep_these, accepted.col2rep] <-  tmp1[, col2rep] 
   }
 
   ## Organizing fields
@@ -290,7 +293,8 @@ if (last_updated != last_download) {
                      quote = "", fill = TRUE)
   
   # Download subdivision of botanical countries (level4)
-  url2 <- "https://github.com/tdwg/wgsrpd/raw/master/109-488-1-ED/2nd%20Edition/tblLevel4.txt"
+  # url2 <- "https://github.com/tdwg/wgsrpd/raw/master/109-488-1-ED/2nd%20Edition/tblLevel4.txt"
+  url2 <- "https://github.com/tdwg/wgsrpd/raw/refs/heads/master/109-488-1-ED/2nd%20Edition/tblLevel4.txt"
   path2 <- gsub("\\.zip", "_dist1.txt", path)
   utils::download.file(url = url2, destfile = path2, mode = "wb")
   level4 <- read.table(path2, sep = "*", fileEncoding = "Latin1", 
@@ -362,10 +366,12 @@ if (last_updated != last_download) {
   
   # Saving ------------------------------------------------------------
   ## Cleaning and re-ordering
-  data <- data[order(data$taxon.status), ]
+  tmp_status <- data$taxon.status
+  tmp_status[tmp_status %in% ""] <- "zzz"
+  data <- data[order(tmp_status), ]
   data <- data[!duplicated(data$scientific.name), ]
-  data <- data[order(data$id), ]
-  
+  # data <- data[order(data$id), ]
+
   ## Removing the combined name + authorship column
   data <- data[, -which(names(data) %in% "scientific.name")]
 
@@ -374,9 +380,9 @@ if (last_updated != last_download) {
   rep_these <- !is.na(data$accepted.id)
   if (any(rep_these)) 
     data$accepted.id[rep_these] <- 
-    paste0(backbone, "-", data$accepted.id[rep_these])
+      paste0(backbone, "-", data$accepted.id[rep_these])
   
-  ## How many columns and lines (in April 2024: 1,421,040; May 2024: 1,429,871)
+  ## How many columns and lines (in April 2024: 1,421,040; May 2024 until May 2025: 1,429,871)
   dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
   
   ## Saving
