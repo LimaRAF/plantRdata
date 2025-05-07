@@ -358,7 +358,7 @@ if (last_updated != last_download) {
   data <- data[order(data$taxon.status), ]
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[!duplicated(paste0(data$higherClassification, data$scientific.name)), ]
-  data <- data[order(data$id), ]
+  # data <- data[order(data$id), ]
   
   ## Removing the combined name + authorship column
   data <- data[, -which(names(data) %in% "scientific.name")]
