@@ -1,3 +1,7 @@
+# plantRdata 0.0.7
+
+* Updating BFO and WCVP backbones
+
 # plantRdata 0.0.6
 
 * Updating BFO backbone version and the last update files in inst/extdata
