@@ -21,7 +21,8 @@ path <- file.path(here::here(), "data-raw", backbone, zip)
 ## Check if there is any new version available
 url0 <- "https://sftp.kew.org/pub/data-repositories/WCVP/"
 last_updated <- .getUpdates(url0, backbone, zip)
-last_download <- readLines(file.path(here::here(), "data-raw", backbone, 
+last_download <- readLines(file.path(here::here(), "data-raw", 
+                                     backbone, 
                                      "last_update.txt"))
 
 ## Obtaining the most up-to-date version, if necessary
@@ -44,7 +45,8 @@ if (last_updated != last_download) {
   ## database version
   file1 <- all_files[grepl("README", all_files)]
   temp <- tempfile()
-  metadata <- readxl::read_xlsx(unzip(path, files = file1, exdir = temp))
+  metadata <- readxl::read_xlsx(unzip(path, files = file1, 
+                                      exdir = temp))
   version <- metadata[[1]][grepl("ersion", metadata[[1]])]
   version <- tolower(.squish(gsub('\"', "", version, perl = TRUE)))
   citation <- .squish(
@@ -69,7 +71,8 @@ if (last_updated != last_download) {
   rep_these <- grepl("\u00d7", data$tax.name)
   if (any(rep_these)) {
     Encoding(data$tax.name[rep_these]) <- "UTF-8"
-    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], "UTF-8", "UTF-8")
+    data$tax.name[rep_these] <- iconv(data$tax.name[rep_these], 
+                                      "UTF-8", "UTF-8")
   }
   
   rep_these <- grepl("\u00eb", data$tax.name) | 
@@ -305,46 +308,60 @@ if (last_updated != last_download) {
   level_all <- dplyr::left_join(level4, level3[, c("L3.code", "L3.area")],
                                 by = c("L3.code"))
   level_all1 <- aggregate(L4.code ~ L3.area + L4.country,
-                          FUN = function(x) paste(unique(x), collapse = "|"),
+                          FUN = function(x) paste(unique(x), 
+                                                  collapse = "|"),
                           data = level_all)
-  names(level_all1) <- c("taxon.distribution.bc", "taxon.distribution.bru", "taxon.distribution.bru.code")
+  names(level_all1) <- c("taxon.distribution.bc", 
+                         "taxon.distribution.bru", 
+                         "taxon.distribution.bru.code")
   
   # Kirgizstan case
   level_all1$taxon.distribution.bc <- 
-    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bc, fixed = FALSE)
+    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bc, 
+         fixed = FALSE)
   level_all1$taxon.distribution.bru <- 
-    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bru, fixed = FALSE)
+    gsub("Kirgizistan", "Kirgizstan", level_all1$taxon.distribution.bru, 
+         fixed = FALSE)
   
   # Gambia case
   level_all1$taxon.distribution.bc <- 
-    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bc, fixed = FALSE)
+    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bc, 
+         fixed = FALSE)
   level_all1$taxon.distribution.bru <- 
-    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bru, fixed = FALSE)
+    gsub("Gambia, The", "Gambia", level_all1$taxon.distribution.bru, 
+         fixed = FALSE)
   
   # Substitute 'i' by 'island' and 'is' by 'islands' to match plantR
   level_all1$taxon.distribution.bc <- 
-    gsub(" I\\.$", " island", level_all1$taxon.distribution.bc, perl = TRUE)
+    gsub(" I\\.$", " island", level_all1$taxon.distribution.bc, 
+         perl = TRUE)
   level_all1$taxon.distribution.bc <- 
-    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bc, perl = TRUE)
+    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bc, 
+         perl = TRUE)
   level_all1$taxon.distribution.bru <- 
-    gsub(" I\\.$", " island", level_all1$taxon.distribution.bru, perl = TRUE)
+    gsub(" I\\.$", " island", level_all1$taxon.distribution.bru, 
+         perl = TRUE)
   level_all1$taxon.distribution.bru <- 
-    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bru, perl = TRUE)
+    gsub(" Is\\.$", " islands", level_all1$taxon.distribution.bru,
+         perl = TRUE)
   
   level_all1$taxon.distribution.bc <- 
     plantR::prepLoc(level_all1$taxon.distribution.bc)
-  level_all1$taxon.distribution.bru <- plantR::prepLoc(level_all1$taxon.distribution.bru)
+  level_all1$taxon.distribution.bru <- 
+    plantR::prepLoc(level_all1$taxon.distribution.bru)
   
   
   # Edit the column to match wvcvp names exactly, that is, nchar max = 20
   level_all1$taxon.distribution.bc <- 
     substr(level_all1$taxon.distribution.bc, 1, 20)
   
-  dist1 <- dplyr::left_join(dist, level_all1, 
-                            by = c("area" = "taxon.distribution.bc"))
+  dist1 <- suppressWarnings(
+            dplyr::left_join(dist, level_all1, 
+                             by = c("area" = "taxon.distribution.bc"))) 
 
   dist2 <- aggregate(taxon.distribution.bru.code ~ plant_name_id,
-                               FUN = function(x) paste(sort(unique(x)), collapse = "|"),
+                               FUN = function(x) paste(sort(unique(x)), 
+                                                       collapse = "|"),
                                data = dist1)
   names(dist2) <- c("id", "taxon.distribution")
   
@@ -382,8 +399,9 @@ if (last_updated != last_download) {
     data$accepted.id[rep_these] <- 
       paste0(backbone, "-", data$accepted.id[rep_these])
   
-  ## How many columns and lines (in April 2024: 1,421,040; May 2024 until May 2025: 1,429,871)
-  dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
+  ## How many columns and lines (in April 2024: 1,421,040; May 2024 until May 2025: 1,429,871; July 2025: 1,438,258)
+  dimensions <- paste0(dim(data)[1], " rows and ", dim(data)[2], 
+                       " columns")
   
   ## Saving
   # .storeData(data, source= backbone, name= paste0(backbone, "Names"))
@@ -392,7 +410,8 @@ if (last_updated != last_download) {
   
   data_folder <- "data-raw" # c("inst", "extdata")
   path_folder <- file.path(here::here(), 
-                           paste0(data_folder, collapse = .Platform$file.sep),
+                           paste0(data_folder, 
+                                  collapse = .Platform$file.sep),
                            backbone)
   write(last_update, file.path(path_folder, "last_update.txt"))
   write(version, file.path(path_folder, "version.txt"))

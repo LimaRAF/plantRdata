@@ -1,3 +1,10 @@
+# plantRdata 0.0.8
+
+* Fixing the BFO backbone regarding the presence of quadrinomials in the datatset (subforms and subvarieties)
+
+* Updating BFO and WCVP backbones
+
+
 # plantRdata 0.0.7
 
 * Updating BFO and WCVP backbones

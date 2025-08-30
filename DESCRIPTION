@@ -1,7 +1,7 @@
 Package: plantRdata
 Type: Package
 Title: Accessory Datasets for Package plantR
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: c(
     person(given   = "Renato A.",
            family  = "Ferreira de Lima",

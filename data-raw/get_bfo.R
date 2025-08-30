@@ -68,6 +68,24 @@ if (last_updated != last_download) {
   data$taxon_name[check_these] <- 
     plantR:::addRank(data$taxon_name[check_these], "f.")
   
+  ## Fixing quadrinomials and other duplicated infra-specific names
+  combo <- paste(data$taxon_name, data$scientificNameAuthorship)
+  rep_these <- duplicated(combo) & 
+    data$taxonRank %in% c("VARIEDADE", "SUB_ESPECIE", "FORMA")
+  ranks <- grepl(" subsp. ", data$scientificName, perl = TRUE) +
+            grepl(" var. ", data$scientificName, perl = TRUE) +
+            grepl(" f. ", data$scientificName, perl = TRUE) > 1
+  if (any(rep_these | ranks)) {
+    nomes_spp <- unique(combo[rep_these | ranks])
+    rep_these1 <- combo %in% nomes_spp
+    split_names <- plantR::fixAuthors(data$scientificName[rep_these1])
+    data$taxon_name[rep_these1] <- split_names$tax.name
+    rep_these2 <- stringr::str_count(split_names$tax.name, " ") > 3
+    if (any(rep_these2))
+      data$taxonRank[rep_these1][rep_these2] <-
+        paste0("SUB", data$taxonRank[rep_these1][rep_these2])
+  }
+  
   ## Adding missing taxonomic ranks up to order (vascular plant order
   ## not available in BFO, eg. FABALES, in Apr 2025)
   check_these <- data$taxonRank %in% "FAMILIA"
@@ -81,10 +99,11 @@ if (last_updated != last_download) {
   ## Standardizing taxon ranks
   patts <- c("ORDEM", "FAMILIA", "GENERO", "ESPECIE", "VARIEDADE",
              "SUB_ESPECIE", "CLASSE", "TRIBO", "SUB_FAMILIA", 
-             "DIVISAO", "FORMA")
+             "DIVISAO", "FORMA", "SUBFORMA", "SUBVARIEDADE")
   names(patts) <- c("order", "family", "genus", "species", "variety",
                     "subspecies", "class", "tribe", "subfamily", 
-                    "phylum", "form")
+                    "phylum", "form", "subform", "subvariety")
+  stopifnot(all(names(table(data$taxonRank)) %in% patts))
   for(i in seq_along(patts)) {
     data$taxonRank[data$taxonRank %in% patts[i]] <- names(patts)[i]
   }
@@ -355,7 +374,7 @@ if (last_updated != last_download) {
   
   ## Cleaning and re-ordering
   data <- data[!data$tax.name %in% c("", NA, " ", "NA"), ]
-  data <- data[order(data$taxon.status), ]
+  data <- data[order(data$name.status, data$taxon.status), ]
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[!duplicated(paste0(data$higherClassification, data$scientific.name)), ]
   # data <- data[order(data$id), ]
