@@ -375,6 +375,7 @@ if (last_updated != last_download) {
   ## Cleaning and re-ordering
   data <- data[!data$tax.name %in% c("", NA, " ", "NA"), ]
   data <- data[order(data$name.status, data$taxon.status), ]
+  data$scientific.name <- plantR:::squish(data$scientific.name)
   data <- data[!duplicated(paste0(data$kingdom, data$scientific.name)), ]
   data <- data[!duplicated(paste0(data$higherClassification, data$scientific.name)), ]
   # data <- data[order(data$id), ]

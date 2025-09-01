@@ -97,9 +97,49 @@ if (last_updated != last_download) {
   check_these <- data$taxon.rank %in% "form"
   data$tax.name[check_these] <- 
     plantR:::addRank(data$tax.name[check_these], "f.")
-  
+
+  ## Standardizing the hybrid symbol
+  rep_these <- grepl(" x ", data$scientific.name, perl = TRUE) &
+                  !grepl("[0-9]|_| [A-Z]$|virus |virus$", data$scientific.name, 
+                         perl = TRUE)
+  if (any(rep_these))  
+    data$scientific.name[rep_these] <- 
+      plantR:::squish(gsub(" x ", " \u00d7 ", data$scientific.name[rep_these], 
+                               fixed = TRUE))
+
+  rep_these <- grepl(" X ", data$scientific.name, perl = TRUE) &
+                !grepl("[0-9]| virus |virus$", data$scientific.name, 
+                  perl = TRUE)
+  if (any(rep_these))  
+    data$scientific.name[rep_these] <- 
+      plantR:::squish(gsub(" X ", " \u00d7 ", data$scientific.name[rep_these], 
+                        fixed = TRUE))
+
+  ## Adding the hybrid symbol to the canonical name
+  empty_vec <- c("", NA, " ", "NA")
+  check_these <- grepl("\u00d7", data$scientific.name, perl = TRUE) &
+                  !grepl("\u00d7", data$tax.name, perl = TRUE) &
+                  !data$tax.name %in% empty_vec
+    
+  if (any(check_these)) {
+    data$scientific.name[check_these] <- 
+      gsub(" \u00d7 (?=[a-z])", " \u00d7", data$scientific.name[check_these], 
+           perl = TRUE)
+    spp_split <- plantR::fixAuthors(data$scientific.name[check_these])
+    data$tax.name[check_these] <- spp_split$tax.name
+  }           
+
+  ## Replacing missing taxon names
+  check_these <- !data$scientific.name %in% empty_vec & 
+                  !grepl("[0-9]|_| [A-Z]$|virus |virus$", data$scientific.name, perl = TRUE) &
+                  data$tax.name %in% c("", NA, " ") &
+                  data$tax.authorship %in% c("", NA, " ")
+    
+  if (any(check_these))
+    data$tax.name[check_these] <- data$scientific.name[check_these]
+    
   ## Standardizing taxon ranks
-  # table(data$taxon.rank)
+  #table(data$taxon.rank)
 
   ## Standardizing taxon ranks
   remarks <- data$taxon.remarks

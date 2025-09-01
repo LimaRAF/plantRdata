@@ -2,6 +2,8 @@
 
 * Fixing the BFO backbone regarding the presence of quadrinomials in the datatset (subforms and subvarieties)
 
+* Fixing the GBIF backbone regarding the notation and presence of hybrids
+
 * Updating BFO and WCVP backbones
 
 
