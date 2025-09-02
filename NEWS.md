@@ -4,6 +4,8 @@
 
 * Fixing the GBIF backbone regarding the notation and presence of hybrids
 
+* Adding the first version of the Brazilian Fauna Taxonomic Catalog (CTFB)
+
 * Updating BFO and WCVP backbones
 
 

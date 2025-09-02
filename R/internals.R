@@ -120,7 +120,7 @@
 
   web_url <- httr::GET(url)
   
-  if (source == "bfo") {
+  if (source == "bfo" | source == "ctfb") {
     
     current_date <- web_url$headers$`last-modified`
     current_date <- gsub(".*, ", "", current_date, perl = TRUE)
@@ -128,7 +128,7 @@
                          perl = TRUE)
     return(current_date)
   }
-  
+
   content <- httr::content(web_url)
   node <- rvest::html_element(content, "pre")
   

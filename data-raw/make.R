@@ -25,6 +25,8 @@ source(here::here("data-raw", "get_wcvp.R"))
 source(here::here("data-raw", "get_gbif.R"))
 # Creating the BFO taxonomic backbone
 source(here::here("data-raw", "get_bfo.R"))
+# Creating the Brazilian Fauna taxonomic backbone
+source(here::here("data-raw", "get_ctfb.R"))
 # Creating the LCVP taxonomic backbone
 # source(here::here("data-raw", "get_lcvp.R"))
 # Creating the GDAM polygons
