@@ -37,4 +37,4 @@ and comprehensive global resource on the world's plants. Taxon
 }
 \keyword{datasets}
 \note{Last update of the downloaded backbone (month/day/year):
-\code{12/27/2024}.}
+\code{6/25/2025}.}

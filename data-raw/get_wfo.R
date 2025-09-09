@@ -170,6 +170,15 @@ if (last_updated != last_download) {
   ## Removing the combined name + authorship column
   data <- data[, -which(names(data) %in% "scientific.name")]
   
+  ## Replacing empty authors by NAs
+  rep_these <- data[["tax.authorship"]] %in% c("", " ")
+  if (any(rep_these))
+    data[["tax.authorship"]][rep_these] <- NA
+  
+  rep_these <- data[["accepted.tax.authorship"]] %in% c("", " ")
+  if (any(rep_these))
+    data[["accepted.tax.authorship"]][rep_these] <- NA
+  
   ## How many columns and lines (in April 2024: 1,572,151)
   dimensions <- 
     paste0(dim(data)[1], " rows and ", dim(data)[2], " columns")
