@@ -6,7 +6,9 @@
 
 * Adding the first version of the Brazilian Fauna Taxonomic Catalog (CTFB)
 
-* Updating BFO and WCVP backbones
+* Updating BFO, WCVP and WFO backbones
+
+* Fixing minor issues related to empty author names in the backbones
 
 
 # plantRdata 0.0.7
