@@ -30,6 +30,6 @@ taxon name matching process.
 }
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (day month year):
-\code{01 Sep 2025}.}
+\code{01 Oct 2025}.}
 \references{
 \code{Brazilian Zoology Group (2023): Catálogo Taxonômico da Fauna do Brasil. v1.2. No organisation. Dataset/Checklist. https://ipt.jbrj.gov.br/jbrj/resource?r=catalogo_taxonomico_da_fauna_do_brasil&amp;v=1.2}.}

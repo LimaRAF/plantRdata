@@ -151,7 +151,8 @@ if (last_updated != last_download) {
   ## Standardizing name status
   check_these <- data$taxonomicStatus %in% "accepted" & 
                   data$nomenclaturalStatus %in% ""
-  data$nomenclaturalStatus[check_these] <- "NOME_CORRETO"
+  if (any(check_these))
+    data$nomenclaturalStatus[check_these] <- "NOME_CORRETO"
   
   #### NAME STATUS NEED TO BE CHECKED ####
   status_conv <- as.data.frame(
@@ -277,7 +278,49 @@ if (last_updated != last_download) {
   data1$accepted.id <- as.character(data1$accepted.id)
   tmp <- dplyr::left_join(data, data1, by = "accepted.id")
   stopifnot(identical(tmp$id, data$id)) # should be TRUE
-  
+
+  ## synonyms with multiple accepted names(!)
+  check_these <- grepl(";", data$accepted.id)
+  if (any(check_these)) {
+    tmp0 <- data[check_these, ]
+    mult.ids <- tmp0$accepted.id
+    result.mult <- vector("list", length(mult.ids))
+    for (j in seq_along(mult.ids)) {
+      ids.j <- strsplit(mult.ids[j], ";")[[1]]
+      tmp0.1 <- data[data$id %in% ids.j, ]
+      orig.tax.rank.j <- tmp0$taxon.rank[tmp0$accepted.id %in% mult.ids[j]]
+      tmp0.1.1 <- tmp0.1[tmp0.1$taxon.rank == orig.tax.rank.j, ]
+      if (dim(tmp0.1.1)[1] == 0) {
+        tmp0.1.1 <- head(tmp0.1, 1)
+        tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
+      } else {
+        if (dim(tmp0.1.1)[1] == 1) {
+          tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
+        } else {
+          tmp0.1.1 <- tmp0.1.1[tmp0.1.1$taxon.status %in% "accepted", ]
+          if (dim(tmp0.1.1)[1] == 1) {
+            tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
+          } else {
+            tmp0.1.1 <- tail(tmp0.1.1, 1)
+            tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
+          }  
+        }
+      }  
+      result.mult[[j]] <- tmp0.1.1
+    }
+    result.mult.all <- unique(dplyr::bind_rows(result.mult))
+    result.mult.all$accepted.id <- NULL
+    names(result.mult.all)[1] <- "accepted.id"
+    result.mult.all$accepted.id <- as.character(result.mult.all$accepted.id)
+    tmp1 <- dplyr::left_join(tmp0, result.mult.all, suffix = c("", ".y"),
+                             by = "accepted.id")
+    stopifnot(identical(tmp1$accepted.id, tmp0$accepted.id)) # should be TRUE
+    cols2rep <- c("tax.name.y", "tax.authorship.y", "taxon.rank.y",
+                  "taxon.status.y", "name.status.y")
+    tmp[check_these, cols2rep] <- tmp1[, cols2rep]
+    data$accepted.id[check_these] <- tmp1$accepted.id
+  }
+
   data$accepted.tax.name <- NA_character_
   data$accepted.tax.authorship <- NA_character_
   data$accepted.taxon.rank <- NA_character_
@@ -430,6 +473,10 @@ if (last_updated != last_download) {
 
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
+  rep_these <- data$accepted.id %in% c("", " ", "NA")
+  if (any(rep_these)) 
+    data$accepted.id[rep_these] <- NA
+    
   rep_these <- !is.na(data$accepted.id)
   if (any(rep_these)) 
     data$accepted.id[rep_these] <- 
