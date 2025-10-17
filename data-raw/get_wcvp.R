@@ -287,6 +287,20 @@ if (last_updated != last_download) {
   dist$area <- gsub(" Is\\.$", " Islands", dist$area)
   dist$area <- plantR::prepLoc(dist$area)
   
+  # Fixing some problematic cases
+  df_fix <- data.frame(wrong = c("dr congo", "nw. balkan pen", "czechia slovakia", "sudan south sudan", "central african republic", "eswatini", "central european russia", "south european russia", 
+  "gulf of guinea islands", "north european russia", "yakutiya", "northwest european russia", "northwest territories", "juan fernandez islands", "wallis futuna islands", "mexican pacific islands", 
+  "central american pacific islands", "cocos (keeling) islands", "mozambique channel islands", "amsterdam st.paul islands", "desventurados islands", "marion prince edward islands", "howland baker islands", 
+  "heard mcdonald islands", "south sandwich islands"), 
+  correct = c("zaire","yugoslavia", "czechoslovakia", "sudan", "central african repu", "swaziland", "central european rus", "south european russi", "gulf of guinea islan", "north european russi", 
+  "yakutskiya", "northwest european r", "northwest territorie", "juan fernandez islan", "wallis futuna island", "mexican pacific isla", "central american pac", "cocos (keeling) isla", "mozambique channel i", 
+  "amsterdam st.paul is", "desventurados island", "marion prince edward", "howland baker island", "heard mcdonald islan", "south sandwich islan"),
+  code = c("ZAI", "YUG", "CZE", "SUD", "CAF", "SWZ", "RUC", "RUS", "GGI", "RUN", "YAK", "RUW", "NWT", "JNF", "WAL", "MXI", "CPI", "CKI", "MCI", "ASP", "DSV", "MPE", "HBI", "HMD", "SSA"))
+  for (i in 1:dim(df_fix)[1]) {
+    dist$area[grepl(df_fix$wrong[i], dist$area, fixed = TRUE)] <- 
+      df_fix$correct[i]
+  }
+
   # Download botanical countries (level3)
   url1 <- "https://github.com/tdwg/wgsrpd/raw/master/109-488-1-ED/2nd%20Edition/tblLevel3.txt"
   path1 <- gsub("\\.zip", "_dist.txt", path)
@@ -350,7 +364,6 @@ if (last_updated != last_download) {
   level_all1$taxon.distribution.bru <- 
     plantR::prepLoc(level_all1$taxon.distribution.bru)
   
-  
   # Edit the column to match wvcvp names exactly, that is, nchar max = 20
   level_all1$taxon.distribution.bc <- 
     substr(level_all1$taxon.distribution.bc, 1, 20)
@@ -358,7 +371,32 @@ if (last_updated != last_download) {
   dist1 <- suppressWarnings(
             dplyr::left_join(dist, level_all1, 
                              by = c("area" = "taxon.distribution.bc"))) 
+  
+  # Any major problems left?
+  sort(table(dist1$area[is.na(dist1$taxon.distribution.bru.code)]))
+  
+  # flagging introduced species
+  rep_these <- dist1$introduced %in% 1
+  rep_these[is.na(rep_these)] <- FALSE
+  dist1$taxon.distribution.bru.code[rep_these] <- 
+    paste0(dist1$taxon.distribution.bru.code[rep_these],"*")
+  dist1$taxon.distribution.bru.code[dist1$taxon.distribution.bru.code == "NA*"] <- NA
 
+  # flagging doubtful occurrences
+  rep_these <- dist1$location_doubtful %in% 1
+  rep_these[is.na(rep_these)] <- FALSE
+  dist1$taxon.distribution.bru.code[rep_these] <- 
+    paste0(dist1$taxon.distribution.bru.code[rep_these],"?")
+  dist1$taxon.distribution.bru.code[dist1$taxon.distribution.bru.code == "NA?"] <- NA
+
+  # flagging past occurrences (extinctions)
+  rep_these <- dist1$extinct %in% 1
+  rep_these[is.na(rep_these)] <- FALSE
+  dist1$taxon.distribution.bru.code[rep_these] <- 
+    paste0(dist1$taxon.distribution.bru.code[rep_these],"\u271D")
+  dist1$taxon.distribution.bru.code[dist1$taxon.distribution.bru.code == "NA\u271D"] <- NA
+  
+  # aggregating per species  
   dist2 <- aggregate(taxon.distribution.bru.code ~ plant_name_id,
                                FUN = function(x) paste(sort(unique(x)), 
                                                        collapse = "|"),
