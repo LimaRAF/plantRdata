@@ -3,7 +3,7 @@
 #' @description This script download and standardize the taxonomic
 #'   backbone of the [Taxonomic Catalog of the Brazilian Fauna](http://fauna.jbrj.gov.br/fauna/listaBrasil)
 #'
-#' @author Renato A. Ferreira de Lima
+#' @author Renato A. Ferreira de Lima & Carlos Eduardo Pinto
 #' 
 #' @keywords internal
 #' 
@@ -416,6 +416,27 @@ if (last_updated != last_download) {
   
   dist0 <- dist0[!(dist0$locality %in% c("", " ", "NA") &  
                  dist0$countryCode %in% c("", " ", "NA")), ]
+  
+  # flagging introduced species
+  rep_these <- dist0$establishmentMeans %in% c("EXOTICA", "CRIPTOGENICA")
+  rep_these[is.na(rep_these)] <- FALSE
+  if (any(rep_these)) {
+    dist0$locality[rep_these] <- 
+      paste0(dist0$locality[rep_these],"*")
+    dist0$locality[rep_these] <- 
+      gsub(";BR-", "*;BR-", dist0$locality[rep_these])
+    dist0$locality[dist0$locality == "*"] <- NA
+    
+    rep_these1 <- dist0$locality[rep_these] %in% c("", " ", NA)
+    if (any(rep_these1)) {
+      dist0$locality[rep_these][rep_these1] <- 
+        paste0(dist0$countryCode[rep_these][rep_these1],"*")
+      dist0$locality[rep_these][rep_these1] <- 
+        gsub(";", "*;", dist0$locality[rep_these][rep_these1])
+      dist0$locality[dist0$locality == "*"] <- NA
+    }
+  }
+  
   dist <- aggregate(dist0$locality, list(dist0$id), 
                     function(x) paste0(sort(unique(x)), collapse = "|"))
   names(dist) <- c("id", "taxon.distribution")
@@ -457,6 +478,7 @@ if (last_updated != last_download) {
           tmp2$taxon.distribution.y[rep_these], sep= ";") 
   stopifnot(identical(tmp1$id, data$id))
   
+  tmp1$taxon.distribution <- gsub(";", "|", tmp1$taxon.distribution, fixed = TRUE)
   data$taxon.distribution <- tmp1$taxon.distribution
     
   # Saving ------------------------------------------------------------

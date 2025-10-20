@@ -347,6 +347,16 @@ if (last_updated != last_download) {
   
   dist <- dist[!dist$locationID %in% c("", " ", "NA"), ]
   # dist$locationID <- gsub("BR-", "", dist$locationID, fixed = TRUE) # pouco ganho de tamanho
+  
+  # flagging introduced species
+  rep_these <- dist$establishmentMeans %in% c("CULTIVADA", "NATURALIZADA")
+  rep_these[is.na(rep_these)] <- FALSE
+  if (any(rep_these)) {
+    dist$locationID[rep_these] <- 
+      paste0(dist$locationID[rep_these],"*")
+    dist$locationID[dist$locationID == "NA*"] <- NA
+  }
+
   dist <- aggregate(dist$locationID, list(dist$id), 
                     function(x) paste0(sort(unique(x)), collapse = "|"))
   names(dist) <- c("id", "taxon.distribution")
