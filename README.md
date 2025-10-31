@@ -24,11 +24,11 @@ coverage](https://github.com/LimaRAF/plantRdata/actions/workflows/test-coverage.
 
 ## Overview
 
-This is a data package that compiles, edits and redistributes relatively
-large taxonomic datasets and maps that are currently used by the R
-package `plantR` (<https://github.com/LimaRAF/plantR/>). These datasets
-are used for the validation of taxonomic and geographic information
-associated to species occurrence records.
+This is a data package that compiles, edits and redistributes large
+taxonomic datasets and maps that are currently used by the R package
+`plantR` (<https://github.com/LimaRAF/plantR/>). These datasets are used
+for the validation of taxonomic and geographic information associated to
+species occurrence records.
 
 Currently, `plantRdata` provides processed datasets from the following
 sources:
@@ -40,6 +40,8 @@ sources:
 - [Flora and Funga of
   Brazil](https://floradobrasil.jbrj.gov.br/consulta/)
   - Divided into Tracheophyta, Fungi, Bryophyta and Algae
+- [Taxonomic Catalog of the Brazilian
+  Fauna](http://fauna.jbrj.gov.br/fauna/listaBrasil)
 
 Please read the documentation of each dataset for further details (e.g.
 `?wfoNames`) on dataset content, processing, orginal source and last
@@ -71,6 +73,12 @@ library("plantRdata")
 This package does not generate new information. It only provide
 processed snapshots of the datasets it compiles. So, we kindly ask you
 to read and cite the original data providers:
+
+> Boeger, W.A., Valim, M.P., Zaher, H., Rafael, J.A., Forzza, R.C.,
+> Percequillo, A.R., Serejo, C.S. et al. (2024). Catálogo Taxonômico da
+> Fauna do Brasil: setting the baseline knowledge on the animal
+> diversity in Brazil. Zoologia 41: e24005.
+> <https://doi.org/10.1590/S1984-4689.v41.e24005>
 
 > Borsch, T., Berendsohn, W., Dalcin, E., et al. (2020). World Flora
 > Online: Placing taxonomists at the heart of a definitive and
