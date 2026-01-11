@@ -170,7 +170,19 @@ if (last_updated != last_download) {
   ## Removing the combined name + authorship column
   data <- data[, -which(names(data) %in% "scientific.name")]
   
-  ## Replacing empty authors by NAs
+  ## Replacing empty fields by NAs
+  rep_these <- data[["phylum"]] %in% c("", " ")
+  if (any(rep_these))
+    data[["phylum"]][rep_these] <- NA
+  
+  rep_these <- data[["family"]] %in% c("", " ")
+  if (any(rep_these))
+    data[["family"]][rep_these] <- NA
+  
+  rep_these <- data[["name.status"]] %in% c("", " ")
+  if (any(rep_these))
+    data[["name.status"]][rep_these] <- NA
+
   rep_these <- data[["tax.authorship"]] %in% c("", " ")
   if (any(rep_these))
     data[["tax.authorship"]][rep_these] <- NA

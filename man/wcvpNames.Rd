@@ -54,4 +54,4 @@ https://doi.org/10.15468/6h8ucr
 }
 \keyword{datasets}
 \note{Last update/change of the downloaded backbone (year-month-day):
-\code{2025-07-03}.}
+\code{2026-01-07}.}
