@@ -161,6 +161,16 @@ if (last_updated != last_download) {
   rep_these <- data$accepted.id %in% c("", " ", NA)
   data$accepted.id[rep_these] <- NA
   
+  ## Fixing some possible problems from WFO taxonomic rank notation
+  families <- c("Nyctanthaceae", "Phyllocladaceae", "Anopteraceae", 
+                "Dicranopteridaceae", "Peranemataceae", "Pteridaceae", 
+                "Tectariaceae")
+  data$taxon.rank[data$tax.name %in% families] <- "family"
+
+  subfamilies <- c("Coreaoideae", "Mussaendeae", "Taenitidoideae", 
+                   "Ceratopterideae")
+  data$taxon.rank[data$tax.name %in% subfamilies] <- "subfamily"
+  
   # Saving ------------------------------------------------------------
   ## Cleaning and re-ordering
   data <- data[order(data$taxon.status), ]
