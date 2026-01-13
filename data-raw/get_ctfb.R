@@ -493,6 +493,24 @@ if (last_updated != last_download) {
   ## Removing the combined name + authorship column
   data <- data[, -which(names(data) %in% "scientific.name")]
 
+  ## Replacing empty authors by NAs
+  rep_these <- data[["tax.authorship"]] %in% c("", " ")
+  rep_these[is.na(rep_these)] <- FALSE 
+  if (any(rep_these))
+    data[["tax.authorship"]][rep_these] <- NA
+  
+  rep_these <- data[["accepted.tax.authorship"]] %in% c("", " ")
+  rep_these[is.na(rep_these)] <- FALSE 
+  if (any(rep_these))
+    data[["accepted.tax.authorship"]][rep_these] <- NA
+  
+  ## Making sure 'accepted.id' is empty for accepted names
+  rep_these <- data[["accepted.id"]] == data[["id"]] |
+                  data[["accepted.id"]] %in% c("", " ")
+  rep_these[is.na(data[["accepted.id"]])] <- FALSE
+  if (any(rep_these))
+    data[["accepted.id"]][rep_these] <- NA
+
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
   rep_these <- data$accepted.id %in% c("", " ", "NA")

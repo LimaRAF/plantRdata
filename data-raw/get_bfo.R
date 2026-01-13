@@ -401,6 +401,12 @@ if (last_updated != last_download) {
   rep_these <- data[["accepted.tax.authorship"]] %in% c("", " ")
   if (any(rep_these))
     data[["accepted.tax.authorship"]][rep_these] <- NA
+  
+  ## Making sure 'accepted.id' is empty for accepted names
+  rep_these <- data[["accepted.id"]] == data[["id"]]
+  rep_these[is.na(data[["accepted.id"]])] <- FALSE
+  if (any(rep_these))
+    data[["accepted.id"]][rep_these] <- NA
 
   ## Adding source acronym to the backbone ID
   data$id <- paste0(backbone, "-", data$id)
