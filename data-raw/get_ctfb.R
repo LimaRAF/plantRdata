@@ -127,13 +127,13 @@ if (last_updated != last_download) {
              "FILO", "FORMA", "SUBFORMA", "SUBVARIEDADE",
              "INFRA_CLASSE", "INFRA_ORDEM", "SUB_CLASSE", 
              "SUB_GENERO", "SUB_ORDEM", "SUB_TRIBO", "SUPER_CLASSE",
-             "SUPER_FAMILIA", "SUPER_ORDEM")
+             "SUPER_FAMILIA", "SUPER_ORDEM", "PARVORDEM")
   names(patts) <- c("order", "family", "genus", "species", "variety",
                     "subspecies", "class", "tribe", "subfamily", 
                     "phylum", "form", "subform", "subvariety", 
                     "infraclass", "infraordem", "subclass", 
                     "subgenus", "suborder", "subtribe", "superclass", 
-                    "superfamily", "superorder")
+                    "superfamily", "superorder", "parvorder")
   stopifnot(all(names(table(data$taxonRank)) %in% patts))
   for(i in seq_along(patts)) {
     data$taxonRank[data$taxonRank %in% patts[i]] <- names(patts)[i]

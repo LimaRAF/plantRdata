@@ -1,6 +1,13 @@
+# plantRdata 0.0.10
+
+* Updating all backbones (Feb/Mar 2026)
+
 # plantRdata 0.0.9
 
 * Updating all backbones
+
+* Improving the standardization of field notation across backbones (issues #1 and #2)
+
 
 # plantRdata 0.0.8
 
