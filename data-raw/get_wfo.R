@@ -34,7 +34,7 @@ if (last_updated != last_download) {
   
   ## unzipping the data
   all_files <- utils::unzip(path, list = TRUE)$Name
-  file <- all_files[grepl("classification", all_files)]
+  file <- all_files[grepl("classification", all_files)] # Until BB has to be downloaded from zenodo and not from url0 - take file _DwC_backbone_R.zip and save it as WFO_Backbone.zip in the correct folder
   temp <- tempfile()
   data <- data.table::fread(unzip(path, files = file, exdir = temp))
   unlink(temp)

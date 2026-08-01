@@ -57,7 +57,7 @@ if (last_updated != last_download) {
   data <- as.data.frame(data)
   data$taxon_name <- .buildName(data, c("genus", "specificEpithet",
                                         "infraspecificEpithet"))
-  check_these <- data$taxonRank %in% "SUB_ESPECIE"
+  check_these <- data$taxonRank %in% c("SUB_ESPECIE", "subspecies")
   data$taxon_name[check_these] <-
     plantR:::addRank(data$taxon_name[check_these], "subsp.")
 
@@ -76,32 +76,32 @@ if (last_updated != last_download) {
   # }
   
   ## Adding missing taxonomic ranks up to order
-  check_these <- data$taxonRank %in% "FAMILIA" & 
+  check_these <- data$taxonRank %in% c("FAMILIA", "family") & 
                   data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$family[check_these]
   
-  check_these <- data$taxonRank %in% "TRIBO" &
+  check_these <- data$taxonRank %in% c("TRIBO", "tribe") &
                   data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$tribe[check_these]
   
-  check_these <- data$taxonRank %in% "ORDEM" &
+  check_these <- data$taxonRank %in% c("ORDEM", "order") &
                   data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$order[check_these]
 
-  check_these <- data$taxonRank %in% "CLASSE" &
+  check_these <- data$taxonRank %in% c("CLASSE", "class") &
                   data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$class[check_these]
 
-  check_these <- data$taxonRank %in% "SUB_FAMILIA" &
+  check_these <- data$taxonRank %in% c("SUB_FAMILIA", "subfamily") &
                     data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$subfamily[check_these]
   
-  check_these <- data$taxonRank %in% "SUPER_FAMILIA" &
+  check_these <- data$taxonRank %in% c("SUPER_FAMILIA", "superfamily") &
                     data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$superfamily[check_these]
@@ -111,7 +111,7 @@ if (last_updated != last_download) {
   # if (any(check_these))
   #   data$taxon_name[check_these] <- data$suborder[check_these]
   
-  check_these <- data$taxonRank %in% "SUB_TRIBO" &
+  check_these <- data$taxonRank %in% c("SUB_TRIBO", "subtribe") &
                   data$taxon_name %in% c("", " ", NA)
   if (any(check_these))
     data$taxon_name[check_these] <- data$subtribe[check_these]
@@ -121,32 +121,32 @@ if (last_updated != last_download) {
   # if (any(check_these))
   #   data$taxon_name[check_these] <- data$subclass[check_these]
   
-  ## Standardizing taxon ranks
-  patts <- c("ORDEM", "FAMILIA", "GENERO", "ESPECIE", "VARIEDADE",
-             "SUB_ESPECIE", "CLASSE", "TRIBO", "SUB_FAMILIA", 
-             "FILO", "FORMA", "SUBFORMA", "SUBVARIEDADE",
-             "INFRA_CLASSE", "INFRA_ORDEM", "SUB_CLASSE", 
-             "SUB_GENERO", "SUB_ORDEM", "SUB_TRIBO", "SUPER_CLASSE",
-             "SUPER_FAMILIA", "SUPER_ORDEM", "PARVORDEM")
-  names(patts) <- c("order", "family", "genus", "species", "variety",
-                    "subspecies", "class", "tribe", "subfamily", 
-                    "phylum", "form", "subform", "subvariety", 
-                    "infraclass", "infraordem", "subclass", 
-                    "subgenus", "suborder", "subtribe", "superclass", 
-                    "superfamily", "superorder", "parvorder")
-  stopifnot(all(names(table(data$taxonRank)) %in% patts))
-  for(i in seq_along(patts)) {
-    data$taxonRank[data$taxonRank %in% patts[i]] <- names(patts)[i]
-  }
+  ## Standardizing taxon ranks - no longer necessary, they are doing at the source now
+  # patts <- c("ORDEM", "FAMILIA", "GENERO", "ESPECIE", "VARIEDADE",
+  #            "SUB_ESPECIE", "CLASSE", "TRIBO", "SUB_FAMILIA", 
+  #            "FILO", "FORMA", "SUBFORMA", "SUBVARIEDADE",
+  #            "INFRA_CLASSE", "INFRA_ORDEM", "SUB_CLASSE", 
+  #            "SUB_GENERO", "SUB_ORDEM", "SUB_TRIBO", "SUPER_CLASSE",
+  #            "SUPER_FAMILIA", "SUPER_ORDEM", "PARVORDEM")
+  # names(patts) <- c("order", "family", "genus", "species", "variety",
+  #                   "subspecies", "class", "tribe", "subfamily", 
+  #                   "phylum", "form", "subform", "subvariety", 
+  #                   "infraclass", "infraordem", "subclass", 
+  #                   "subgenus", "suborder", "subtribe", "superclass", 
+  #                   "superfamily", "superorder", "parvorder")
+  # stopifnot(all(names(table(data$taxonRank)) %in% patts))
+  # for(i in seq_along(patts)) {
+  #   data$taxonRank[data$taxonRank %in% patts[i]] <- names(patts)[i]
+  # }
 
-  ## Standardizing taxon status
-  patts <- c("NOME_ACEITO", "SINONIMO")
-  names(patts) <- c("accepted", "synonym")
-  stopifnot(all(names(table(data$taxonomicStatus)) %in% patts))
-  for(i in seq_along(patts)) {
-    data$taxonomicStatus[data$taxonomicStatus %in% patts[i]] <- 
-      names(patts)[i]
-  }
+  ## Standardizing taxon status - no longer necessary, they are doing at the source now
+  # patts <- c("NOME_ACEITO", "SINONIMO")
+  # names(patts) <- c("accepted", "synonym")
+  # stopifnot(all(names(table(data$taxonomicStatus)) %in% patts))
+  # for(i in seq_along(patts)) {
+  #   data$taxonomicStatus[data$taxonomicStatus %in% patts[i]] <- 
+  #     names(patts)[i]
+  # }
   
   ## Standardizing name status
   check_these <- data$taxonomicStatus %in% "accepted" & 
@@ -192,14 +192,14 @@ if (last_updated != last_download) {
     miss_data$id <- miss_data$taxonID
     miss_data$parentNameUsageID <- NA
     miss_data$namePublishedInYear <- NA
-    miss_data$namePublishedIn <- NA
-    miss_data$originalNameUsageID <- NA
+    # miss_data$namePublishedIn <- NA
+    # miss_data$originalNameUsageID <- NA
     miss_data$genus <- NA
     miss_data$specificEpithet <- NA
     miss_data$infraspecificEpithet <- NA
     miss_data$modified <- NA
     miss_data$bibliographicCitation <- NA
-    miss_data$references <- NA
+    # miss_data$references <- NA
 
     x <- data.frame(scientificName = miss_data$scientificName)
     tmp <- plantR::fixSpecies(x)
@@ -280,9 +280,9 @@ if (last_updated != last_download) {
   stopifnot(identical(tmp$id, data$id)) # should be TRUE
 
   ## synonyms with multiple accepted names(!)
-  check_these <- grepl(";", data$accepted.id)
+  check_these <- grepl(";", data$accepted.id, fixed = TRUE)
   if (any(check_these)) {
-    tmp0 <- data[check_these, ]
+    tmp0 <- data[check_these, , drop = FALSE]
     mult.ids <- tmp0$accepted.id
     result.mult <- vector("list", length(mult.ids))
     for (j in seq_along(mult.ids)) {
@@ -298,6 +298,9 @@ if (last_updated != last_download) {
           tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
         } else {
           tmp0.1.1 <- tmp0.1.1[tmp0.1.1$taxon.status %in% "accepted", ]
+          if (dim(tmp0.1.1)[1] == 0)
+            tmp0.1.1 <- tmp0.1[tmp0.1$taxon.rank == orig.tax.rank.j, ]
+          
           if (dim(tmp0.1.1)[1] == 1) {
             tmp0$accepted.id[tmp0$accepted.id %in% mult.ids[j]] <- tmp0.1.1$id
           } else {
@@ -414,33 +417,35 @@ if (last_updated != last_download) {
   dist0 <- data.table::fread(unzip(path, files = file, exdir = temp))
   unlink(temp)
   
-  dist0 <- dist0[!(dist0$locality %in% c("", " ", "NA") &  
+  dist0 <- dist0[!(dist0$locationID %in% c("", " ", "NA") &  
                  dist0$countryCode %in% c("", " ", "NA")), ]
   
   # flagging introduced species
-  rep_these <- dist0$establishmentMeans %in% c("EXOTICA", "CRIPTOGENICA")
+  rep_these <- dist0$establishmentMeans %in% c("EXOTICA", "CRIPTOGENICA", "introduced")
   rep_these[is.na(rep_these)] <- FALSE
   if (any(rep_these)) {
-    dist0$locality[rep_these] <- 
-      paste0(dist0$locality[rep_these],"*")
-    dist0$locality[rep_these] <- 
-      gsub(";BR-", "*;BR-", dist0$locality[rep_these])
-    dist0$locality[dist0$locality == "*"] <- NA
+    dist0$locationID[rep_these] <- 
+      paste0(dist0$locationID[rep_these],"*")
+    dist0$locationID[rep_these] <- 
+      gsub(";BR-", "*;BR-", dist0$locationID[rep_these])
+    dist0$locationID[dist0$locationID == "*"] <- NA
     
-    rep_these1 <- dist0$locality[rep_these] %in% c("", " ", NA)
+    rep_these1 <- dist0$locationID[rep_these] %in% c("", " ", NA)
     if (any(rep_these1)) {
-      dist0$locality[rep_these][rep_these1] <- 
+      dist0$locationID[rep_these][rep_these1] <- 
         paste0(dist0$countryCode[rep_these][rep_these1],"*")
-      dist0$locality[rep_these][rep_these1] <- 
-        gsub(";", "*;", dist0$locality[rep_these][rep_these1])
-      dist0$locality[dist0$locality == "*"] <- NA
+      dist0$locationID[rep_these][rep_these1] <- 
+        gsub(";", "*;", dist0$locationID[rep_these][rep_these1])
+      dist0$locationID[dist0$locationID == "*"] <- NA
     }
   }
   
-  dist <- aggregate(dist0$locality, list(dist0$id), 
+  dist <- aggregate(dist0$locationID, list(dist0$id), 
                     function(x) paste0(sort(unique(x)), collapse = "|"))
   names(dist) <- c("id", "taxon.distribution")
-  dist$id <- as.integer(dist$id)
+  dist$id <- as.character(dist$id)
+  dist$taxon.distribution <- 
+    gsub("^\\||\\|$", "", dist$taxon.distribution, perl = TRUE)
   
   tmp <- data
   tmp1 <- dplyr::left_join(tmp, dist, by = "id")
@@ -460,7 +465,7 @@ if (last_updated != last_download) {
   dist <- aggregate(dist0$countryCode, list(dist0$id), 
                     function(x) paste0(sort(unique(x)), collapse = "|"))
   names(dist) <- c("id", "taxon.distribution")
-  dist$id <- as.integer(dist$id)
+  dist$id <- as.character(dist$id)
   
   tmp2 <- dplyr::left_join(tmp1, dist, by = "id")
   
